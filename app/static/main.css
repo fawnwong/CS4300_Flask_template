@@ -1,4 +1,25 @@
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
+.fade-in {
+  opacity:0;
+  -webkit-animation:fadeIn ease 1;
+  -moz-animation:fadeIn ease 1;
+  animation:fadeIn ease 1;
+
+  -webkit-animation-fill-mode:forwards;
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:1s;
+  -moz-animation-duration:1s;
+  animation-duration:1s;
+
+  -webkit-animation-delay: .7s;
+  -moz-animation-delay: .7s;
+  animation-delay: .7s;
+}
 
 @media (min-width: 1200px) {
 .container {
@@ -11,7 +32,7 @@
         text-align:center;
     }
     body {
-        padding-top: 50px;
+        padding-top: 40px;
         padding-bottom: 15px;
     }
 
@@ -33,8 +54,8 @@
 
 .topcorner {
     position:absolute;
-    top:2%;
-    right:2%;
+    top: 2%;
+    right: 1%;
     font-size: 8px;
     font-weight: 200px;
     color: #aaaaaa;
@@ -165,6 +186,7 @@ p a:hover:before {
 .search {
     width: 700px;
     height: 400px;
+    margin-top: 2%;
 }
 
 input:focus,
