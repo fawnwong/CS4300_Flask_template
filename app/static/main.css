@@ -46,6 +46,23 @@ h1 {
     font-weight: 700;
 }
 
+h2 {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 500;
+}
+
+.left-search {
+    width: 33%;
+    position: absolute;
+    float: left;
+    background-
+    background-image: src('includes/bot.png');
+}
+
+.right-search {
+
+}
+
 .title {
     color: #d82652;
 }
