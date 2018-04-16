@@ -2,13 +2,15 @@
     <head>
         <link rel="stylesheet" href="/static/bootstrap.min.css">
         <link rel="stylesheet" href="/static/main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="/static/main.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Work+Sans:200,300,400,500,600,700" rel="stylesheet">
     </head>
     <body>
         <div class="topcorner">
             Project Name: {{ name }}   |   Student Name: ({{ netid }})
         </div>
-        <form class="form-inline global-search" action="/#results">
+        <form class="form-inline global-search">
             <h1>
                 <a href="/">reddit<span class="title">bots</span></a>
             </h1>
@@ -27,9 +29,10 @@
                 </div>
             </div>
         </form>
-        <a name="results"></a><form id="results" class="form-inline global-search">
+        <a name="results"></a>
+        <form id="results" class="form-inline global-search">
         {% if data %}
-            <h2>{{output_message}}</h2> <br>
+            <h2 id="output">{{output_message}}</h2> <br>
             {% for d in data %}  
                 <div class="result fade-in">
                     <p class="result-name">{{ d.name }}</p><br>
