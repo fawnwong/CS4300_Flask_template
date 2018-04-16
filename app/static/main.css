@@ -68,7 +68,7 @@ h2 {
 
 .result {
     width: 700px;
-    height: 100px;
+    height: 110px;
     border: 1px solid #aaaaaa;
     margin-top: 20px;
     text-align: left;
@@ -88,19 +88,24 @@ h2 {
     margin-bottom: 4px;
 }
 
-a {
+p a {
     color: #d82652;
     font-weight: 300;
     position: relative;
     text-decoration: none;
 }
 
-a:hover {
+h1 a, h1 a:hover {
+    text-decoration: none;
+    color: #000;
+}
+
+p a:hover {
     color: #888888;
     text-decoration: none;
 }
 
-a:before {
+p a:before {
     content: "";
     position: absolute;
     left: 0;
@@ -113,7 +118,7 @@ a:before {
     transition-timing-function: ease-out;
   }
 
-a:hover:before {
+p a:hover:before {
     right: 0;
   
 }
@@ -132,6 +137,12 @@ a:hover:before {
     border-bottom: 1px solid #666666;
     margin-top: 125px;
     padding: 8px;
+    font-weight: 300;
+}
+
+::placeholder {
+    color: #cccccc;
+    opacity: 1;
 }
 
 #input-btn {
