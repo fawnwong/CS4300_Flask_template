@@ -96,6 +96,7 @@ a:hover {
     border: none;
     border-bottom: 1px solid #666666;
     margin-top: 125px;
+    padding: 8px;
 }
 
 #input-btn {
@@ -113,4 +114,11 @@ a:hover {
 .search {
     width: 700px;
     height: 400px;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }
