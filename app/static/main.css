@@ -218,7 +218,7 @@ button:focus {
     bottom: 1px;
     position: absolute;
     background: #d82652; 
-    transition: 0.2s ease all;
+    transition: 0.7s ease all;
 }
 
 .bar:before {
