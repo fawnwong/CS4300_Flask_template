@@ -1,9 +1,22 @@
-from . import *  
+from . import *
+import os
+from app.irsystem.models.search import *
 from app.irsystem.models.helpers import *
 from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 
 project_name = "beepboop: Bot Finder"
 net_id = "Fawn Wong (fyw6), Cindy Wang (cw653), Danna Greenberg (dg489), Stephanie Hogan (sjh278), Annie Zhang (zz229)"
+
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
+with open(os.path.join(APP_ROOT, '../data/data.json')) as f:
+    data = json.loads(f.readlines()[0])
+
+bot_names = data.keys()
+botname_to_index = {botname:index for index, botname in enumerate(data.keys())}
+index_to_botname = {v:k for k,v in botname_to_index.items()}
+
+with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
+    data = json.loads(f.readlines()[0])
 
 @irsystem.route('/', methods=['GET'])
 def search():
@@ -24,7 +37,7 @@ def search():
 				{"name": "B Bot 1", "comment": "B Comment 1", "link": "http://www.google.com", "category": "bot_comments"},
 				{"name": "C Bot 1", "comment": "C Comment 1", "link": "http://www.google.com", "category": "user_comments"}
 			]},
-			{"rank": "2", 
+			{"rank": "2",
 			"list": [
 				{"name": "A Bot 2", "comment": "A Comment 2", "link": "http://www.google.com", "category": "bot_name"},
 				{"name": "B Bot 2", "comment": "B Comment 2", "link": "http://www.google.com", "category": "bot_comments"},
@@ -49,6 +62,7 @@ def search():
 				{"name": "C Bot 5", "comment": "C Comment 5", "link": "http://www.google.com", "category": "user_comments"}
 			]},
 		]
+        data = bot_to_list(query, bot_names)
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
 
