@@ -33,13 +33,36 @@
         <form id="results" class="form-inline global-search">
         {% if data %}
             <h2 id="output">{{output_message}}</h2> <br>
-            {% for d in data %}  
-                <div class="result fade-in">
-                    <p class="result-name">{{ d.name }}</p><br>
-                    <p class="result-comment">{{ d.comment }}</p><br>
-                    <p><a href ="{{ d.link }}"> learn more >></a></p>
+            <div class="row">
+                <div class="col col-labels">
+                    Results by Bot Name
                 </div>
-                <br>
+                <div class="col col-labels">
+                    Results by Bot Comments
+                </div>
+                <div class="col col-labels">
+                    Results by User Comments
+                </div>
+            </div>
+            {% for d in data %}  
+            <div class="row fade-in">
+                <div class="result col col-labels">
+                    <p class="result-name">{{ d.list[0].name }}</p><br>
+                    <p class="result-comment">{{ d.list[0].comment }}</p><br>
+                    <p><a href ="{{ d.list[0].link }}"> learn more >></a></p>
+                </div>
+                <div class="result col col-labels">
+                    <p class="result-name">{{ d.list[1].name }}</p><br>
+                    <p class="result-comment">{{ d.list[1].comment }}</p><br>
+                    <p><a href ="{{ d.list[1].link }}"> learn more >></a></p>
+                </div>
+                <div class="result col col-labels">
+                    <p class="result-name">{{ d.list[2].name }}</p><br>
+                    <p class="result-comment">{{ d.list[2].comment }}</p><br>
+                    <p><a href ="{{ d.list[2].link }}"> learn more >></a></p>
+                </div>
+            </div>
+            <br>
             {% endfor %}
         {% endif %}
         </form>

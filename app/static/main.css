@@ -241,3 +241,20 @@ button:focus {
 #search-bar {
     margin-top: 125px;
 }
+
+.row {
+    width: 80%;
+}
+
+.col {
+    width: 33%;
+}
+
+.col-labels {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#output {
+    margin-bottom: 20px;
+}
