@@ -51,18 +51,6 @@ h2 {
     font-weight: 500;
 }
 
-.left-search {
-    width: 33%;
-    position: absolute;
-    float: left;
-    background-
-    background-image: src('includes/bot.png');
-}
-
-.right-search {
-
-}
-
 .title {
     color: #d82652;
 }
@@ -92,4 +80,37 @@ a {
 
 a:hover {
     color: #888888;
+}
+
+#botgraphic {
+    /* width: 33%; */
+    /* height: 100px; */
+    /* position: absolute; */
+    float: left;
+    /* background-image: url('bot.png'); */
+}
+
+#input {
+    float: right;
+    width: 400px;
+    border: none;
+    border-bottom: 1px solid #666666;
+    margin-top: 125px;
+}
+
+#input-btn {
+    margin-top: 14px;
+    float: right;
+    background-color: #ffffff;
+    border: 1px solid #888888;
+    color: #666666;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.search {
+    width: 700px;
+    height: 400px;
 }
