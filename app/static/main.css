@@ -1,3 +1,5 @@
+
+
 @media (min-width: 1200px) {
 .container {
     max-width: 970px;
@@ -12,15 +14,17 @@ body {
 padding-top: 15%;
 padding-bottom: 15px;
 }
+
 .global-search {
 text-align:center;
 padding:10px;
+
 }
 .global-search .form-control {
 width:500px;
 }
 .global-search * {
-display:inline-block;
+display: inline-block;
 margin-bottom:0;
 }
 }
@@ -35,4 +39,13 @@ border: none
 }
 .step-links a{
 color: #4285F4;
+}
+
+h1 {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 700;
+}
+
+.title {
+    color: #d82652;
 }
