@@ -49,3 +49,29 @@ h1 {
 .title {
     color: #d82652;
 }
+
+.result {
+    width: 700px;
+    height: 100px;
+    border: 1px solid #888888;
+    margin-top: 20px;
+    text-align: left;
+    padding: 20px;
+}
+
+.result-name {
+    color: #d82652;
+    font-weight: bold;
+}
+
+.result-comment {
+    color: #666666;
+}
+
+a {
+    color: #d82652;
+}
+
+a:hover {
+    color: #888888;
+}
