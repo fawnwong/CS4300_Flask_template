@@ -137,11 +137,10 @@ p a:before {
     transition-property: left right;
     transition-duration: 0.3s;
     transition-timing-function: ease-out;
-  }
+}
 
 p a:hover:before {
     right: 0;
-  
 }
 
 #botgraphic {
@@ -156,7 +155,6 @@ p a:hover:before {
     width: 400px;
     border: none;
     border-bottom: 1px solid #666666;
-    margin-top: 125px;
     padding: 8px;
     font-weight: 300;
 }
@@ -164,6 +162,16 @@ p a:hover:before {
 ::placeholder {
     color: #cccccc;
     opacity: 1;
+}
+
+#input:focus {
+    border-bottom-color: rgba(0,0,0,0.12);
+}
+
+#input:focus::after {
+    visibility: visible;
+    width: 100%;
+    left: 0;
 }
 
 #input-btn {
@@ -194,4 +202,42 @@ select:focus,
 textarea:focus,
 button:focus {
     outline: none;
+}
+
+.bar {
+    position: relative;
+    display: block;
+    margin-top: 38px;
+}
+
+.bar:before,
+.bar:after {
+    content: '';
+    height: 1px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: #d82652; 
+    transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%; 
+}
+
+#input:focus {
+    border-color: transparent;
+}
+
+#input:focus ~ .bar:before,
+#input:focus ~ .bar:after {
+    width: 50%;
+}
+
+#search-bar {
+    margin-top: 125px;
 }
