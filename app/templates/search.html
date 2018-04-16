@@ -8,7 +8,7 @@
         <div class="topcorner">
             Project Name: {{ name }}   |   Student Name: ({{ netid }})
         </div>
-        <form class="form-inline global-search">
+        <form class="form-inline global-search" action="/#results">
             <h1>
                 <a href="/">reddit<span class="title">bots</span></a>
             </h1>
@@ -26,11 +26,11 @@
                 </div>
             </div>
         </form>
-        <form class="form-inline global-search">
+        <a name="results"></a><form id="results" class="form-inline global-search">
         {% if data %}
             <h2>{{output_message}}</h2> <br>
             {% for d in data %}  
-                <div class="result">
+                <div class="result fade-in">
                     <p class="result-name">{{ d.name }}</p><br>
                     <p class="result-comment">{{ d.comment }}</p><br>
                     <p><a href ="{{ d.link }}"> learn more >></a></p>
