@@ -15,10 +15,15 @@
             
             <br><br>
             
-            <div class="form-group">
-                <input id="input" type="text" name="search" class="form-control" placeholder="Your Input">
+            <div class="search">
+                <div id="botgraphic">
+                    <img src="/static/bot.png" alt="happybot" height="342" width="254">
+                </div>
+                <div id="search-bar">
+                    <input id="input" type="text" name="search" class="form-input" placeholder="Your Input"> <br>
+                    <button type="submit" id="input-btn"> Let's Go! </button>
+                </div>
             </div>
-            <button type="submit" class="btn btn-info"> Go! </button>
         </form>
         <form class="form-inline global-search">
         {% if data %}
@@ -34,5 +39,4 @@
         {% endif %}
         </form>
     </body>
-
 </html>
