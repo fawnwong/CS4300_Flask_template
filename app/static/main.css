@@ -111,6 +111,11 @@ a:hover {
     font-size: 16px;
 }
 
+#input-btn:hover {
+    color: #d82652;
+    border: 1px solid #d82652;
+}
+
 .search {
     width: 700px;
     height: 400px;
