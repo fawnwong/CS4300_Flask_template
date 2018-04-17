@@ -5,8 +5,6 @@ import json
 import os
 import csv
 import re
-# from app.irsystem.models.helpers import *
-# from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 import urllib
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
@@ -15,11 +13,9 @@ with open(os.path.join(APP_ROOT, '../data/data.json')) as f:
 
 with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
 	big_bot_data = json.loads(f.readlines()[0])
-# json.dump(big_bot_data, open('BigBotComments.json', 'w'), cls=NumpyEncoder)
-# awsurl = urllib.urlopen('https://s3.us-east-2.amazonaws.com/beepboop4300/BigBotComments.json')
-# json.load(awsurl)
-# # Read numpy array from a json file (where FILE_NAME is an S3 location or local file)
-# BigBotComments = json.load(awsurl, object_hook=json_numpy_obj_hook, encoding='utf8')
+
+with open(os.path.join(APP_ROOT, '../data/sorted_user_results.json')) as infile:
+	user_result_dict = json.load(infile)
 
 bot_names = bot_data.keys()
 botname_to_index = {botname:index for index, botname in enumerate(bot_data.keys())}
@@ -56,51 +52,10 @@ def similar_names(query, msgs):
 def getUserCommentResults(query, bot_names_list, user_comments):
 	results = {}
 
-	# search through source files for match 
-	# with open(os.path.join(APP_ROOT+"/../data/", user_comments)) as csvfile:
-	# 	reader = csv.reader(csvfile) 
-	# 	for row in reader:
-	# 		row_res = []
-	# 		category = row[0]	
-	# 		print(category)			
-	# 		rel_bots = row[1]
-	# 		postings = rel_bots.split(')')
-	# 		for posting in postings:
-	# 			if re.search('[0-9]', posting):
-	# 				tup = posting.split(',')
+	if (query in user_result_dict.keys()):
+		sorted_by_score = user_result_dict[query]
 
-	# 				found = []
-	# 				for i in range(len(tup)):
-	# 					find_dec = re.search(r'[0-9]+.[0-9]+', tup[i])
-	# 					if find_dec:
-	# 						num = find_dec.group(0)
-	# 						found.append(num)
-	# 					else: 
-	# 						find_num = re.search(r'[0-9]+', tup[i])
-	# 						if find_num:
-	# 							num = find_num.group(0)
-	# 							found.append(num)
-
-
-	# 				if len(found) > 0:
-	# 					bot_id = found[0]
-	# 					bot_score = found[1]
-	# 					row_res.append((int(bot_id), float(bot_score)))
-	# 		results[category] = row_res
-
-
-	# with open('user_results.json', "r") as infile:
-	# 	json.dump(results, outfile)
-	# 	print("HELLO")
-
-	with open(os.path.join(APP_ROOT, '../data/user_results.json')) as infile:
-		result_dict = json.load(infile)
-
-	if (query in result_dict.keys()):
-		results = result_dict[query]
-		sorted_by_score = sorted(results, key=lambda tup: tup[1])
-
-		top5 = sorted_by_score[::-1][5:]
+		top5 = sorted_by_score[5:]
 		if top5:
 			max_score = float(top5[0][1])
 
