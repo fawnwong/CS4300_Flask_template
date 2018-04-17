@@ -13,8 +13,8 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_
 with open(os.path.join(APP_ROOT, '../data/data.json')) as f:
 	bot_data = json.loads(f.readlines()[0])
 
-# with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
-# 	big_bot_data = json.loads(f.readlines()[0])
+with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
+	big_bot_data = json.loads(f.readlines()[0])
 # json.dump(big_bot_data, open('BigBotComments.json', 'w'), cls=NumpyEncoder)
 # awsurl = urllib.urlopen('https://s3.us-east-2.amazonaws.com/beepboop4300/BigBotComments.json')
 # json.load(awsurl)
@@ -25,7 +25,7 @@ bot_names = bot_data.keys()
 botname_to_index = {botname:index for index, botname in enumerate(bot_data.keys())}
 index_to_botname = {v:k for k,v in botname_to_index.items()}
 
-n_feats = 5000
+n_feats = 2000
 doc_by_vocab = np.empty([len(bot_data), n_feats])
 
 def build_vectorizer(max_features, stop_words, norm='l2'):
