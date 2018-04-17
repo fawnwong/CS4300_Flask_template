@@ -54,62 +54,70 @@ def similar_names(query, msgs):
 	return li[0:5]
 
 def getUserCommentResults(query, bot_names_list, user_comments):
-
-	results = []
+	results = {}
 
 	# search through source files for match 
-	with open(os.path.join(APP_ROOT+"/../data/", user_comments)) as csvfile:
-		reader = csv.reader(csvfile) 
-		for row in reader:
+	# with open(os.path.join(APP_ROOT+"/../data/", user_comments)) as csvfile:
+	# 	reader = csv.reader(csvfile) 
+	# 	for row in reader:
+	# 		row_res = []
+	# 		category = row[0]	
+	# 		print(category)			
+	# 		rel_bots = row[1]
+	# 		postings = rel_bots.split(')')
+	# 		for posting in postings:
+	# 			if re.search('[0-9]', posting):
+	# 				tup = posting.split(',')
 
-			category = row[0]
-			if query == category:
-				rel_bots = row[1]
-
-				# rebuild list
-				postings = rel_bots.split(')')
-				for posting in postings:
-					if re.search('[0-9]', posting):
-						tup = posting.split(',')
-
-						found = []
-						for i in range(len(tup)):
-							find_dec = re.search(r'[0-9]+.[0-9]+', tup[i])
-							if find_dec:
-								num = find_dec.group(0)
-								found.append(num)
-							else: 
-								find_num = re.search(r'[0-9]+', tup[i])
-								if find_num:
-									num = find_num.group(0)
-									found.append(num)
+	# 				found = []
+	# 				for i in range(len(tup)):
+	# 					find_dec = re.search(r'[0-9]+.[0-9]+', tup[i])
+	# 					if find_dec:
+	# 						num = find_dec.group(0)
+	# 						found.append(num)
+	# 					else: 
+	# 						find_num = re.search(r'[0-9]+', tup[i])
+	# 						if find_num:
+	# 							num = find_num.group(0)
+	# 							found.append(num)
 
 
-						if len(found) > 0:
-							bot_id = found[0]
-							bot_score = found[1]
-							results.append((bot_id, bot_score))
+	# 				if len(found) > 0:
+	# 					bot_id = found[0]
+	# 					bot_score = found[1]
+	# 					row_res.append((int(bot_id), float(bot_score)))
+	# 		results[category] = row_res
 
-	# sort results
-	sorted_by_score = sorted(results, key=lambda tup: tup[1])
-	top5 = list(reversed(sorted_by_score[-5:]))
-	if top5:
-		max_score = float(top5[0][1])
 
-	# get bot list from input csv
-	with open(os.path.join(APP_ROOT, '../data/'+bot_names_list)) as csvfile:
-		reader = csv.reader(csvfile) 
-		bot_list = list(reader)
+	# with open('user_results.json', "r") as infile:
+	# 	json.dump(results, outfile)
+	# 	print("HELLO")
 
-	final_results = []
-	if top5:
-		for result in top5:
-			bot_index = int(result[0])
-			bot_name = bot_list[bot_index][0]
-			bot_score = float(result[1]) / max_score
-			final_results.append((bot_name,bot_score))
+	with open(os.path.join(APP_ROOT, '../data/user_results.json')) as infile:
+		result_dict = json.load(infile)
 
-	return final_results
+	if (query in result_dict.keys()):
+		results = result_dict[query]
+		sorted_by_score = sorted(results, key=lambda tup: tup[1])
+
+		top5 = sorted_by_score[::-1][5:]
+		if top5:
+			max_score = float(top5[0][1])
+
+		# get bot list from input csv
+		with open(os.path.join(APP_ROOT, '../data/'+bot_names_list)) as csvfile:
+			reader = csv.reader(csvfile) 
+			bot_list = list(reader)
+
+		final_results = []
+		if top5:
+			for result in top5:
+				bot_index = int(result[0])
+				bot_name = bot_list[bot_index][0]
+				bot_score = float(result[1]) / max_score
+				final_results.append((bot_name,bot_score))
+			return final_results
+	return False
 
 
 def bot_to_list(query):
@@ -121,12 +129,11 @@ def bot_to_list(query):
 	bot_names_list = 'bot_names.csv'
 	user_comments = 'user_comment_data.csv'
 
-	# query_words = query.split()
-	# for query in query_words:
-	# 	myresults = getUserCommentResults(query, bot_names_list, user_comments)
-	# 	if myresults:
-	# 		break
-	myresults = False
+	query_words = query.split()
+	for query in query_words:
+		myresults = getUserCommentResults(query, bot_names_list, user_comments)
+		if myresults:
+			break
 
 	if not myresults:
 		myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
