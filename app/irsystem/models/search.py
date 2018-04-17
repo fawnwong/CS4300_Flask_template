@@ -5,13 +5,21 @@ import json
 import os
 import csv
 import re
+from app.irsystem.models.helpers import *
+from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
+import urllib
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 with open(os.path.join(APP_ROOT, '../data/data.json')) as f:
 	bot_data = json.loads(f.readlines()[0])
 
-with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
-	big_bot_data = json.loads(f.readlines()[0])
+# with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
+# 	big_bot_data = json.loads(f.readlines()[0])
+# json.dump(big_bot_data, open('BigBotComments.json', 'w'), cls=NumpyEncoder)
+# awsurl = urllib.urlopen('https://s3.us-east-2.amazonaws.com/beepboop4300/BigBotComments.json')
+# json.load(awsurl)
+# # Read numpy array from a json file (where FILE_NAME is an S3 location or local file)
+# BigBotComments = json.load(awsurl, object_hook=json_numpy_obj_hook, encoding='utf8')
 
 bot_names = bot_data.keys()
 botname_to_index = {botname:index for index, botname in enumerate(bot_data.keys())}
