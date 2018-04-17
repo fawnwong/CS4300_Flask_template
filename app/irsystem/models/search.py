@@ -113,8 +113,11 @@ def bot_to_list(query):
 	bot_names_list = 'bot_names.csv'
 	user_comments = 'user_comment_data.csv'
 
-
-	myresults = getUserCommentResults(query, bot_names_list, user_comments)
+	query_words = query.split()
+	for query in query_words:
+		myresults = getUserCommentResults(query, bot_names_list, user_comments)
+		if myresults:
+			break
 
 	if not myresults:
 		myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
