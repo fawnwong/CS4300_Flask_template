@@ -42,7 +42,7 @@ def top_n_cos(n,query_string, tfidf):
 	q_vec = tfidf.transform([query_string]).toarray()
 	cosines = np.array([np.dot(q_vec, d) for d in doc_by_vocab]).T[0]
 	args = np.argsort(cosines)[::-1][:n]
-	return [(index_to_botname[x], big_bot_data[index_to_botname[x]]) for x in args]
+	return [(index_to_botname[x], bot_data[index_to_botname[x]]) for x in args]
 
 def edit_distance(query_str, msg_str):
 	return Levenshtein.distance(query_str.lower(), msg_str.lower())
