@@ -126,6 +126,7 @@ def bot_to_list(query):
 	# 	myresults = getUserCommentResults(query, bot_names_list, user_comments)
 	# 	if myresults:
 	# 		break
+	myresults = False
 
 	if not myresults:
 		myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
