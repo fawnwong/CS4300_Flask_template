@@ -5,16 +5,19 @@ import json
 import os
 import csv
 import re
+import cPickle
 # from app.irsystem.models.helpers import *
 # from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 import urllib
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
-with open(os.path.join(APP_ROOT, '../data/data.json')) as f:
-	bot_data = json.loads(f.readlines()[0])
+#with open(os.path.join(APP_ROOT, '../data/data.json')) as f:
+#	bot_data = json.loads(f.readlines()[0])
+bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
 
-with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
-	big_bot_data = json.loads(f.readlines()[0])
+#with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
+#	big_bot_data = json.loads(f.readlines()[0])
+big_bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/big_bot_data.p'), "rb" ) )
 # json.dump(big_bot_data, open('BigBotComments.json', 'w'), cls=NumpyEncoder)
 # awsurl = urllib.urlopen('https://s3.us-east-2.amazonaws.com/beepboop4300/BigBotComments.json')
 # json.load(awsurl)
@@ -46,7 +49,6 @@ def top_n_cos(n,query_string, tfidf):
 
 def edit_distance(query_str, msg_str):
 	return Levenshtein.distance(query_str.lower(), msg_str.lower())
-
 
 def similar_names(query, msgs):
 	li = [(edit_distance(query, msg),msg) for msg in msgs]
@@ -93,8 +95,9 @@ def getUserCommentResults(query, bot_names_list, user_comments):
 	# 	json.dump(results, outfile)
 	# 	print("HELLO")
 
-	with open(os.path.join(APP_ROOT, '../data/user_results.json')) as infile:
-		result_dict = json.load(infile)
+	#with open(os.path.join(APP_ROOT, '../data/user_results.json')) as infile:
+		#result_dict = json.load(infile)
+	result_dict = cPickle.load( open(os.path.join(APP_ROOT, '../data/user_results.p'), "rb" ) )
 
 	if (query in result_dict.keys()):
 		results = result_dict[query]
