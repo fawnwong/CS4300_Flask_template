@@ -32,11 +32,13 @@ n_feats = 2000
 doc_by_vocab = np.empty([len(bot_data), n_feats])
 
 def build_vectorizer(max_features, stop_words, norm='l2'):
-	return TfidfVectorizer(max_features = max_features, 
-								stop_words = stop_words,
-								max_df = 0.9,
-								min_df = 1,
-								norm = norm)
+	#return TfidfVectorizer(max_features = max_features, 
+								#stop_words = stop_words,
+								#max_df = 0.9,
+								#min_df = 1,
+								#norm = norm)
+	vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
+	return vec
 	
 tfidf_vec = build_vectorizer(n_feats, "english")
 doc_by_vocab = tfidf_vec.fit_transform([bot_data[d] for d in bot_data.keys()]).toarray()
