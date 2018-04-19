@@ -31,16 +31,8 @@ index_to_botname = {v:k for k,v in botname_to_index.items()}
 n_feats = 2000
 doc_by_vocab = np.empty([len(bot_data), n_feats])
 
-def build_vectorizer(max_features, stop_words, norm='l2'):
-	#return TfidfVectorizer(max_features = max_features, 
-								#stop_words = stop_words,
-								#max_df = 0.9,
-								#min_df = 1,
-								#norm = norm)
-	vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
-	return vec
 	
-tfidf_vec = build_vectorizer(n_feats, "english")
+tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
 doc_by_vocab = tfidf_vec.fit_transform([bot_data[d] for d in bot_data.keys()]).toarray()
 
 def top_n_cos(n,query_string, tfidf):
