@@ -50,7 +50,7 @@ def search():
 				{"name": "C Bot 5", "comment": "C Comment 5", "link": "http://www.google.com", "category": "user_comments"}
 			]},
 		]
-        data = bot_to_list(query)
+		data = bot_to_list(query)
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
 
