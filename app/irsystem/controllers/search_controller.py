@@ -35,7 +35,7 @@ def search():
 			"list": [
 				{"name": "A Bot 3", "comment": "A Comment 3", "link": "http://www.google.com", "category": "bot_name", "score": 0.921},
 				{"name": "B Bot 3", "comment": "B Comment 3", "link": "http://www.google.com", "category": "bot_comments", "score": 0.452},
-				{"name": "C Bot 3", "comment": "C Comment 3", "link": "http://www.google.com", "category": "user_comments", "score": 0.109
+				{"name": "C Bot 3", "comment": "C Comment 3", "link": "http://www.google.com", "category": "user_comments", "score": 0.109}
 			]},
 			{"rank": "4", 
 			"list": [
