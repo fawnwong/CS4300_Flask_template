@@ -36,6 +36,7 @@ doc_by_vocab = np.empty([len(bot_data), n_feats])
 
 	
 tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
+
 doc_by_vocab = tfidf_vec.fit_transform([bot_data[d] for d in bot_data.keys()]).toarray()
 
 def top_n_cos(n,query_string, tfidf):
@@ -46,6 +47,7 @@ def top_n_cos(n,query_string, tfidf):
 
 def edit_distance(query_str, msg_str):
 	return Levenshtein.distance(query_str.lower(), msg_str.lower())
+
 
 def similar_names(query, msgs):
 	li = [(edit_distance(query, msg),msg) for msg in msgs]
