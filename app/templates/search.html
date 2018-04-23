@@ -34,35 +34,46 @@
         {% if data %}
             <h2 id="output">{{output_message}}</h2> <br>
             <div class="row">
-                <div class="col col-labels">
-                    Results by Bot Name
+                <div class="select-style sort-bar">
+                    <select id="search-select" name="search-type" onchange="selectHandler()">
+                        <option value="name">Name</option>
+                        <option value="bot-com">Bot Comments</option>
+                        <option value="user-com">User Comments</option>
+                    </select>
                 </div>
-                <div class="col col-labels">
-                    Results by Bot Comments
-                </div>
-                <div class="col col-labels">
-                    Results by User Comments
-                </div>
+                
+                <label class="sort-bar" id="sort-label">SORT BY</label>
             </div>
-            {% for d in data %}  
-            <div class="row fade-in">
-                <div class="result col col-labels">
-                    <p class="result-name">{{ d.list[0].name }}</p><br>
-                    <p class="result-comment">{{ d.list[0].comment }}</p><br>
-                    <p><a href ="{{ d.list[0].link }}"> learn more >></a></p>
-                </div>
-                <div class="result col col-labels">
-                    <p class="result-name">{{ d.list[1].name }}</p><br>
-                    <p class="result-comment">{{ d.list[1].comment }}</p><br>
-                    <p><a href ="{{ d.list[1].link }}"> learn more >></a></p>
-                </div>
-                <div class="result col col-labels">
-                    <p class="result-name">{{ d.list[2].name }}</p><br>
-                    <p class="result-comment">{{ d.list[2].comment }}</p><br>
-                    <p><a href ="{{ d.list[2].link }}"> learn more >></a></p>
-                </div>
-            </div>
-            <br>
+            {% for d in data %}   
+            <!-- add scores, highlight comments --> 
+                {% for l in d.list %}
+                    {% if l.category == "bot_name" %}
+                        <div class="row fade-in by-bot-name">
+                            <div class="result ">
+                                <p class="result-name">{{ l.name }}</p><br>
+                                <p class="result-comment">{{ l.comment }}</p><br>
+                                <p><a href ="{{ l.link }}"> learn more >></a></p>
+                            </div>
+                        </div>
+                    {% elif l.category == "bot_comments" %}
+                        <div class="row fade-in by-bot-com inactive">
+                            <div class="result ">
+                                <p class="result-name">{{ l.name }}</p><br>
+                                <p class="result-comment">{{ l.comment }}</p><br>
+                                <p><a href ="{{ l.link }}"> learn more >></a></p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row fade-in by-user-com inactive">
+                            <div class="result ">
+                                <p class="result-name">{{ l.name }}</p><br>
+                                <p class="result-comment">{{ l.comment }}</p><br>
+                                <p><a href ="{{ l.link }}"> learn more >></a></p>
+                            </div>
+                        </div>
+                        <br>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         {% endif %}
         </form>
