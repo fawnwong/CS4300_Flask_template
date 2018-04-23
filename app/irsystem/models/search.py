@@ -33,7 +33,7 @@ doc_by_vocab = np.empty([len(bot_data), n_feats])
 
 	
 tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
-doc_by_vocab = tfidf_vec.fit_transform([bot_data[d] for d in bot_data.keys()]).toarray()
+doc_by_vocab = cPickle.load( open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ) )
 
 def top_n_cos(n,query_string, tfidf):
 	q_vec = tfidf.transform([query_string]).toarray()
