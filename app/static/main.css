@@ -327,3 +327,8 @@ button:focus {
 .close {
     line-height: 0;
 }
+
+.rank {
+    color: #d82652;
+    font-weight: 400;
+}
