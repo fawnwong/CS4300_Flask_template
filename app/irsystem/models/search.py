@@ -53,7 +53,7 @@ def similar_names(query, msgs):
 	li = [(edit_distance(query, msg),msg) for msg in msgs]
 	li.sort(key=lambda x: x[0])
 	return li[0:5]
-'''
+
 def getUserCommentResults(query, bot_names_list, user_comments):
 	results = {}
 
@@ -79,7 +79,7 @@ def getUserCommentResults(query, bot_names_list, user_comments):
 				final_results.append((bot_name,bot_score))
 			return final_results
 	return False
-'''
+
 def queryAnalysis(input_query):
 	# initialize with our own categories
 	lexicon = Empath()
