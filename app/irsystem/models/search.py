@@ -111,7 +111,7 @@ def commentAnalysis(query_topics, json_file):
 	# cPickle.load( open(os.path.join(APP_ROOT, ('../data/' + pickle_file)), "rb" ) )
 	
 	# use json instead:
-	with open(json_file) as myfile:
+	with open(os.path.join(APP_ROOT, '../data/'+json_file)) as myfile:
 		user_sentiment = json.loads(myfile.read())
 
 	# if we get categories from query, show results; otherwise show error
