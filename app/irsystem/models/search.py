@@ -53,7 +53,7 @@ def similar_names(query, msgs):
 	li = [(edit_distance(query, msg),msg) for msg in msgs]
 	li.sort(key=lambda x: x[0])
 	return li[0:5]
-
+'''
 def getUserCommentResults(query, bot_names_list, user_comments):
 	results = {}
 
@@ -79,7 +79,53 @@ def getUserCommentResults(query, bot_names_list, user_comments):
 				final_results.append((bot_name,bot_score))
 			return final_results
 	return False
+'''
+def queryAnalysis(input_query):
+	# initialize with our own categories
+	lexicon = Empath()
+	lexicon.create_category("funny",["funny","lol","hilarious", "haha", "joke"])
+	lexicon.create_category("silly",["silly","dumb","ridiculous", "stupid", "childish", "fun"])
+	lexicon.create_category("stupid",["stupid","dumb","pointless", "why", "wrong"])
+	lexicon.create_category("good", ["good", "great", "wonderful", "fantastic", "useful", "appreciated"])
+	lexicon.create_category("bad",["bad", "wrong", "inaccurate", "stupid", "disagree"])
+	lexicon.create_category("useful", ["good", "function", "effective", "interesting", "learn"])
+	lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"])
+	lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
+	lexicon.create_category("moderating", ["moderating", "mod", "moderate", "rules", "comment", "removed"])
+	lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
 
+	# get empath categories from query
+	query_sentiment = lexicon.analyze(input_query.lower() normalize=True)
+	relevant_query_topics = {k: v for k, v in query_sentiment.items() if v > 0}
+	return relevant_query_topics
+
+def commentAnalysis(query_topics, pickle_file):
+
+	# get empath results from pickle file
+# 	with open(pickle_file, 'rb') as fp:
+# 	    user_sentiment = cpickle.load(fp)
+	
+	cPickle.load( open(os.path.join(APP_ROOT, ('../data/' + pickle_file)), "rb" ) )
+
+	# if we get categories from query, show results; otherwise show error
+	if len(query_topics.items()) > 1:
+
+		# find top 10 results for each query topic
+		top_results = []
+		for topic, key in query_topics.items():
+			top_results += user_sentiment[topic][-10:]
+
+		# sort again if we combined multiple categories 
+		if len(query_topics.items()) > 1:
+			re_sorted_by_score = sorted(top_results, key=lambda tup: tup[1])
+			return list(reversed(re_sorted_by_score[-10:]))
+		
+		# if one category, it's already been sorted in preprocessing
+		return top_results
+
+	else: 
+		# no relevant categories found 
+		return []
 
 def bot_to_list(query):
 	if query == None:
@@ -89,12 +135,15 @@ def bot_to_list(query):
 
 	bot_names_list = 'bot_names.csv'
 	user_comments = 'user_comment_data.csv'
-
+	'''
 	query_words = query.split()
 	for query in query_words:
 		myresults = getUserCommentResults(query, bot_names_list, user_comments)
 		if myresults:
 			break
+	'''
+	query_topics = queryAnalysis(query)
+	myresults = commentAnalysis(query_topics, 'user_sentiment.p')
 
 	if not myresults:
 		myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
