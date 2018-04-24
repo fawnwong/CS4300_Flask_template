@@ -95,7 +95,7 @@ def queryAnalysis(input_query):
 	lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
 
 	# get empath categories from query
-	query_sentiment = lexicon.analyze(input_query.lower() normalize=True)
+	query_sentiment = lexicon.analyze(input_query.lower(), normalize=True)
 	relevant_query_topics = {k: v for k, v in query_sentiment.items() if v > 0}
 	return relevant_query_topics
 
