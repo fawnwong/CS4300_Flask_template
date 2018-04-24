@@ -84,6 +84,12 @@ h2 {
     margin-top: 20px;
 }
 
+h5 {
+    font-weight: 500;
+    color: #d82652;
+    font-size: 20px;
+}
+
 .title {
     color: #d82652;
 }
@@ -295,4 +301,29 @@ button:focus {
 
 .inactive {
     display: none;
+}
+
+.modal {
+    background-color: rgba(0,0,0,0.5);
+    font-family: 'Work Sans', sans-serif;
+}
+
+.modal-content {
+    height: 400px;
+    box-shadow: unset;
+    border: unset;
+    border-radius: 3px;
+}
+
+.modal-header {
+    border-bottom: unset;
+    text-align: center;
+}
+
+.modal-footer {
+    border-top: unset;
+}
+
+.close {
+    line-height: 0;
 }
