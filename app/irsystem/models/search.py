@@ -105,7 +105,7 @@ def commentAnalysis(query_topics, pickle_file):
 # 	with open(pickle_file, 'rb') as fp:
 # 	    user_sentiment = cpickle.load(fp)
 	
-	cPickle.load( open(os.path.join(APP_ROOT, ('../data/' + pickle_file)), "rb" ) )
+	# cPickle.load( open(os.path.join(APP_ROOT, ('../data/' + pickle_file)), "rb" ) )
 
 	# if we get categories from query, show results; otherwise show error
 	if len(query_topics.items()) > 1:
