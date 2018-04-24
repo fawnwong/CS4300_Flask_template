@@ -55,6 +55,7 @@ def similar_names(query, msgs):
 	li.sort(key=lambda x: x[0])
 	return li[0:5]
 
+'''
 def getUserCommentResults(query, bot_names_list, user_comments):
 	results = {}
 
@@ -80,6 +81,7 @@ def getUserCommentResults(query, bot_names_list, user_comments):
 				final_results.append((bot_name,bot_score))
 			return final_results
 	return False
+'''
 
 def queryAnalysis(input_query):
 	# initialize with our own categories
@@ -100,13 +102,17 @@ def queryAnalysis(input_query):
 	relevant_query_topics = {k: v for k, v in query_sentiment.items() if v > 0}
 	return relevant_query_topics
 
-def commentAnalysis(query_topics, pickle_file):
+def commentAnalysis(query_topics, json_file):
 
 	# get empath results from pickle file
 	# 	with open(pickle_file, 'rb') as fp:
 	# 	    user_sentiment = cpickle.load(fp)
 	
 	# cPickle.load( open(os.path.join(APP_ROOT, ('../data/' + pickle_file)), "rb" ) )
+	
+	# use json instead:
+	with open(json_file) as myfile:
+		user_sentiment = json.loads(myfile.read())
 
 	# if we get categories from query, show results; otherwise show error
 	if len(query_topics.items()) > 1:
@@ -176,7 +182,7 @@ def bot_to_list(query, query_type):
 		'''
 		
 		query_topics = queryAnalysis(query)
-		myresults = commentAnalysis(query_topics, 'user_sentiment.p')
+		myresults = commentAnalysis(query_topics, 'user_sentiment.json')
 
 		if not myresults:
 			myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
