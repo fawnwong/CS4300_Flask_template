@@ -332,3 +332,33 @@ button:focus {
     color: #d82652;
     font-weight: 400;
 }
+
+.result-learn {
+    color: #d82652;
+    font-weight: 300;
+    position: relative;
+    text-decoration: none;
+}
+
+.result-learn:hover {
+    color: #888888;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.result-learn:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: 0px;
+    background: #888888;
+    height: 1px;
+    transition-property: left right;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-out;
+}
+
+.result-learn:hover:before {
+    right: 0;
+}

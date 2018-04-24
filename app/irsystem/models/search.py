@@ -1,6 +1,7 @@
 import Levenshtein  # package python-Levenshtein
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
+from empath import Empath
 import json
 import os
 import csv
@@ -54,6 +55,7 @@ def similar_names(query, msgs):
 	li.sort(key=lambda x: x[0])
 	return li[0:5]
 
+'''
 def getUserCommentResults(query, bot_names_list, user_comments):
 	results = {}
 
@@ -79,55 +81,127 @@ def getUserCommentResults(query, bot_names_list, user_comments):
 				final_results.append((bot_name,bot_score))
 			return final_results
 	return False
+'''
 
+def queryAnalysis(input_query):
+	# initialize with our own categories
+	lexicon = Empath()
+	lexicon.create_category("funny",["funny","lol","hilarious", "haha", "joke"])
+	lexicon.create_category("silly",["silly","dumb","ridiculous", "stupid", "childish", "fun"])
+	lexicon.create_category("stupid",["stupid","dumb","pointless", "why", "wrong"])
+	lexicon.create_category("good", ["good", "great", "wonderful", "fantastic", "useful", "appreciated"])
+	lexicon.create_category("bad",["bad", "wrong", "inaccurate", "stupid", "disagree"])
+	lexicon.create_category("useful", ["good", "function", "effective", "interesting", "learn"])
+	lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"])
+	lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
+	lexicon.create_category("moderating", ["moderating", "mod", "moderate", "rules", "comment", "removed"])
+	lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
 
-def bot_to_list(query):
+	# get empath categories from query
+	query_sentiment = lexicon.analyze(input_query.lower(), normalize=True)
+	relevant_query_topics = {k: v for k, v in query_sentiment.items() if v > 0}
+	return relevant_query_topics
+
+def commentAnalysis(query_topics, json_file):
+
+	# get empath results from pickle file
+	# 	with open(pickle_file, 'rb') as fp:
+	# 	    user_sentiment = cpickle.load(fp)
+	
+	# cPickle.load( open(os.path.join(APP_ROOT, ('../data/' + pickle_file)), "rb" ) )
+	
+	# use json instead:
+	with open(json_file) as myfile:
+		user_sentiment = json.loads(myfile.read())
+
+	# if we get categories from query, show results; otherwise show error
+	if len(query_topics.items()) > 1:
+
+		# find top 10 results for each query topic
+		top_results = []
+		for topic, key in query_topics.items():
+			top_results += user_sentiment[topic][-10:]
+
+		# sort again if we combined multiple categories 
+		if len(query_topics.items()) > 1:
+			re_sorted_by_score = sorted(top_results, key=lambda tup: tup[1])
+			return list(reversed(re_sorted_by_score[-10:]))
+		
+		# if one category, it's already been sorted in preprocessing
+		return top_results
+
+	else: 
+		# no relevant categories found 
+		return []
+
+def bot_to_list(query, query_type):
 	if query == None:
 		return []
-	edit_dist = similar_names(query, bot_names)
-	cos_sim = top_n_cos(5,query, tfidf_vec)
-
-	bot_names_list = 'bot_names.csv'
-	user_comments = 'user_comment_data.csv'
-
-	query_words = query.split()
-	for query in query_words:
-		myresults = getUserCommentResults(query, bot_names_list, user_comments)
-		if myresults:
-			break
-
-	if not myresults:
-		myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
-		
-	data = [{"rank": "1", "list": [{"name": edit_dist[0][1], "comment": "A Comment 1", "link": "http://reddit.com/u/"+ edit_dist[0][1], "category": "bot_name"},
-								   {"name": cos_sim[0][0], "comment": "B Comment 1", "link": "http://reddit.com/u/"+cos_sim[0][0], "category": "bot_comments"},
-								   {"name": myresults[0][0], "comment": "C Comment 1", "link": "http://reddit.com/u/" + myresults[0][0], "category": "user_comments"}
-								   ]},
+	if query_type == "name":
+		edit_dist = similar_names(query, bot_names)
+		data = [{"rank": "1", "result": {"name": edit_dist[0][1], "comment": "A Comment 1", "link": "http://reddit.com/u/"+ edit_dist[0][1], "category": "bot_name"}},
 			{"rank": "2",
-			"list": [
-					 {"name": edit_dist[1][1], "comment": "A Comment 2", "link": "http://reddit.com/u/" + edit_dist[1][1], "category": "bot_name"},
-					 {"name": cos_sim[1][0], "comment": "B Comment 2", "link": "http://reddit.com/u/"+cos_sim[1][0], "category": "bot_comments"},
-					 {"name": myresults[1][0], "comment": "C Comment 2", "link": "http://reddit.com/u/" + myresults[1][0], "category": "user_comments"}
-					 ]},
+			"result":{"name": edit_dist[1][1], "comment": "A Comment 2", "link": "http://reddit.com/u/" + edit_dist[1][1], "category": "bot_name"}
+					 },
 			{"rank": "3",
-			"list": [
-					 {"name": edit_dist[2][1], "comment": "A Comment 3", "link": "http://reddit.com/u/" + edit_dist[2][1], "category": "bot_name"},
-					 {"name": cos_sim[2][0], "comment": "B Comment 3", "link": "http://reddit.com/u/"+cos_sim[2][0], "category": "bot_comments"},
-					 {"name": myresults[2][0], "comment": "C Comment 3", "link": "http://reddit.com/u/" + myresults[2][0], "category": "user_comments"}
-					 ]},
+			"result": {"name": edit_dist[2][1], "comment": "A Comment 3", "link": "http://reddit.com/u/" + edit_dist[2][1], "category": "bot_name"}
+					 },
 			{"rank": "4",
-			"list": [
-					 {"name": edit_dist[3][1], "comment": "A Comment 4", "link": "http://reddit.com/u/" + edit_dist[3][1], "category": "bot_name"},
-					 {"name": cos_sim[3][0], "comment": "B Comment 4", "link": "http://reddit.com/u/"+cos_sim[3][0], "category": "bot_comments"},
-					 {"name": myresults[3][0], "comment": "C Comment 4", "link": "http://reddit.com/u/" + myresults[3][0], "category": "user_comments"}
-					 ]},
+			"result": {"name": edit_dist[3][1], "comment": "A Comment 4", "link": "http://reddit.com/u/" + edit_dist[3][1], "category": "bot_name"}
+					 },
 			{"rank": "5",
-			"list": [
-					 {"name": edit_dist[4][1], "comment": "A Comment 5", "link":"http://reddit.com/u/" + edit_dist[4][1], "category": "bot_name"},
-					 {"name": cos_sim[4][0], "comment": "B Comment 5", "link": "http://reddit.com/u/"+cos_sim[4][0], "category": "bot_comments"},
-					 {"name": myresults[4][0], "comment": "C Comment 5", "link": "http://reddit.com/u/" + myresults[4][0], "category": "user_comments"}
-					 ]},
+			"result": {"name": edit_dist[4][1], "comment": "A Comment 5", "link":"http://reddit.com/u/" + edit_dist[4][1], "category": "bot_name"}
+					 }
 			]
+	elif query_type == "bot-com":
+		cos_sim = top_n_cos(5,query, tfidf_vec)
+		data = [{"rank": "1", "result": {"name": cos_sim[0][0], "comment": "B Comment 1", "link": "http://reddit.com/u/"+cos_sim[0][0], "category": "bot_comments"}},
+			{"rank": "2",
+			"result":{"name": cos_sim[1][0], "comment": "B Comment 2", "link": "http://reddit.com/u/"+cos_sim[1][0], "category": "bot_comments"}
+					 },
+			{"rank": "3",
+			"result": {"name": cos_sim[2][0], "comment": "B Comment 3", "link": "http://reddit.com/u/"+cos_sim[2][0], "category": "bot_comments"}
+					 },
+			{"rank": "4",
+			"result": {"name": cos_sim[3][0], "comment": "B Comment 4", "link": "http://reddit.com/u/"+cos_sim[3][0], "category": "bot_comments"}
+					 },
+			{"rank": "5",
+			"result": {"name": cos_sim[4][0], "comment": "B Comment 5", "link": "http://reddit.com/u/"+cos_sim[4][0], "category": "bot_comments"}
+					 }
+			]
+	else:
+		'''
+		bot_names_list = 'bot_names.csv'
+		user_comments = 'user_comment_data.csv'
+		
+		query_words = query.split()
+		for query in query_words:
+			myresults = getUserCommentResults(query, bot_names_list, user_comments)
+			if myresults:
+				break
+		'''
+		
+		query_topics = queryAnalysis(query)
+		myresults = commentAnalysis(query_topics, 'user_sentiment.json')
+
+		if not myresults:
+			myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
+
+		data = [{"rank": "1", "result": {"name": myresults[0][0], "comment": "C Comment 1", "link": "http://reddit.com/u/" + myresults[0][0], "category": "user_comments"}},
+			{"rank": "2",
+			"result":{"name": myresults[1][0], "comment": "C Comment 2", "link": "http://reddit.com/u/" + myresults[1][0], "category": "user_comments"}
+					 },
+			{"rank": "3",
+			"result": {"name": myresults[2][0], "comment": "C Comment 2", "link": "http://reddit.com/u/" + myresults[2][0], "category": "user_comments"}
+					 },
+			{"rank": "4",
+			"result": {"name": myresults[3][0], "comment": "C Comment 2", "link": "http://reddit.com/u/" + myresults[3][0], "category": "user_comments"}
+					 },
+			{"rank": "5",
+			"result": {"name": myresults[4][0], "comment": "C Comment 2", "link": "http://reddit.com/u/" + myresults[4][0], "category": "user_comments"}
+					 }
+			]
+
 	return data
 
 

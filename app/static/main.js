@@ -7,19 +7,23 @@ $(document).ready(function () {
   }
 });
 
-function selectHandler() {
-  var selected = document.getElementById("search-select").value;
-  if (selected == "bot-com") {  
-    $(".by-bot-name").addClass("inactive");
-    $(".by-user-com").addClass("inactive");
-    $(".by-bot-com").removeClass("inactive");
-  } else if (selected == "user-com") {
-    $(".by-bot-name").addClass("inactive");
-    $(".by-user-com").removeClass("inactive");
-    $(".by-bot-com").addClass("inactive");
-  } else {
-    $(".by-bot-name").removeClass("inactive");
-    $(".by-user-com").addClass("inactive");
-    $(".by-bot-com").addClass("inactive"); 
-  }
+// function selectHandler() {
+//   var selected = document.getElementById("search-select").value;
+//   if (selected == "bot-com") {  
+//     $(".by-bot-name").addClass("inactive");
+//     $(".by-user-com").addClass("inactive");
+//     $(".by-bot-com").removeClass("inactive");
+//   } else if (selected == "user-com") {
+//     $(".by-bot-name").addClass("inactive");
+//     $(".by-user-com").removeClass("inactive");
+//     $(".by-bot-com").addClass("inactive");
+//   } else {
+//     $(".by-bot-name").removeClass("inactive");
+//     $(".by-user-com").addClass("inactive");
+//     $(".by-bot-com").addClass("inactive"); 
+//   }
+// }
+
+function learnHandler(element) {
+  console.log("hi");
 }

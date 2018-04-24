@@ -26,6 +26,16 @@
                     <input id="input" type="text" name="search" class="form-input" placeholder="Do you know what you want your bot to do?">
                     <span class="bar"></span> 
                     <br>
+                    <div>
+                        <div class="select-style sort-bar">
+                            <select id="search-select" name="search-type">
+                                <option value="name">Name</option>
+                                <option value="bot-com">Bot Comments</option>
+                                <option value="user-com">User Comments</option>
+                            </select>
+                        </div>
+                        <label class="sort-bar" id="sort-label">SORT BY</label>
+                    </div> <br>
                     <button type="submit" id="input-btn"> Let's Go! </button>
                 </div>
             </div>
@@ -34,47 +44,15 @@
         <form id="results" class="form-inline global-search">
         {% if data %}
             <h2 id="output">{{output_message}}</h2> <br>
-            <div class="row">
-                <div class="select-style sort-bar">
-                    <select id="search-select" name="search-type" onchange="selectHandler()">
-                        <option value="name">Name</option>
-                        <option value="bot-com">Bot Comments</option>
-                        <option value="user-com">User Comments</option>
-                    </select>
-                </div>
-                
-                <label class="sort-bar" id="sort-label">SORT BY</label>
-            </div>
             {% for d in data %}   
             <!-- add scores, highlight comments --> 
-                {% for l in d.list %}
-                    {% if l.category == "bot_name" %}
-                        <div class="row fade-in by-bot-name">
-                            <div class="result ">
-                                <p class="result-name">{{ l.name }}</p><br>
-                                <p class="result-comment">{{ l.comment }}</p><br>
-                                <p><a href ="{{ l.link }}"> learn more >></a></p>
-                            </div>
-                        </div>
-                    {% elif l.category == "bot_comments" %}
-                        <div class="row fade-in by-bot-com inactive">
-                            <div class="result ">
-                                <p class="result-name">{{ l.name }}</p><br>
-                                <p class="result-comment">{{ l.comment }}</p><br>
-                                <p><a href ="{{ l.link }}"> learn more >></a></p>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="row fade-in by-user-com inactive">
-                            <div class="result ">
-                                <p class="result-name">{{ l.name }}</p><br>
-                                <p class="result-comment">{{ l.comment }}</p><br>
-                                <p><a href ="{{ l.link }}"> learn more >></a></p>
-                            </div>
-                        </div>
-                        <br>
-                    {% endif %}
-                {% endfor %}
+                <div class="row fade-in by-bot-name">
+                    <div class="result">
+                        <p class="result-name">{{ d.result.name }}</p><br>
+                        <p class="result-comment">{{ d.result.comment }}</p><br>
+                        <p class="result-learn"> learn more >></p>
+                    </div>
+                </div>
             {% endfor %}
         {% endif %}
         </form>
@@ -101,8 +79,7 @@
                 <p><a href="#">See me on Reddit >></a></p>
             </div>
             </div>
-        </div>
-        </div>
+        </div> -->
     </body>
 
 
