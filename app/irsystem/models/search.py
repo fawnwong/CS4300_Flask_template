@@ -1,6 +1,7 @@
 import Levenshtein  # package python-Levenshtein
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
+from empath import Empath
 import json
 import os
 import csv
@@ -102,8 +103,8 @@ def queryAnalysis(input_query):
 def commentAnalysis(query_topics, pickle_file):
 
 	# get empath results from pickle file
-# 	with open(pickle_file, 'rb') as fp:
-# 	    user_sentiment = cpickle.load(fp)
+	# 	with open(pickle_file, 'rb') as fp:
+	# 	    user_sentiment = cpickle.load(fp)
 	
 	# cPickle.load( open(os.path.join(APP_ROOT, ('../data/' + pickle_file)), "rb" ) )
 
@@ -163,14 +164,19 @@ def bot_to_list(query, query_type):
 					 }
 			]
 	else:
+		'''
 		bot_names_list = 'bot_names.csv'
 		user_comments = 'user_comment_data.csv'
-
+		
 		query_words = query.split()
 		for query in query_words:
 			myresults = getUserCommentResults(query, bot_names_list, user_comments)
 			if myresults:
 				break
+		'''
+		
+		query_topics = queryAnalysis(query)
+		myresults = commentAnalysis(query_topics, 'user_sentiment.p')
 
 		if not myresults:
 			myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
