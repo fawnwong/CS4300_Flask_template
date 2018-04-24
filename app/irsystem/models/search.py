@@ -5,17 +5,27 @@ import json
 import os
 import csv
 import re
+import cPickle
+# from app.irsystem.models.helpers import *
+# from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 import urllib
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
-with open(os.path.join(APP_ROOT, '../data/data.json')) as f:
-	bot_data = json.loads(f.readlines()[0])
+#with open(os.path.join(APP_ROOT, '../data/data.json')) as f:
+#	bot_data = json.loads(f.readlines()[0])
+bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
 
-with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
-	big_bot_data = json.loads(f.readlines()[0])
 
-with open(os.path.join(APP_ROOT, '../data/sorted_user_results.json')) as infile:
-	user_result_dict = json.load(infile)
+#with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
+#	big_bot_data = json.loads(f.readlines()[0])
+big_bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/big_bot_data.p'), "rb" ) )
+result_dict = cPickle.load( open(os.path.join(APP_ROOT, '../data/user_results.p'), "rb" ) )
+# json.dump(big_bot_data, open('BigBotComments.json', 'w'), cls=NumpyEncoder)
+# awsurl = urllib.urlopen('https://s3.us-east-2.amazonaws.com/beepboop4300/BigBotComments.json')
+# json.load(awsurl)
+# # Read numpy array from a json file (where FILE_NAME is an S3 location or local file)
+# BigBotComments = json.load(awsurl, object_hook=json_numpy_obj_hook, encoding='utf8')
+
 
 bot_names = bot_data.keys()
 botname_to_index = {botname:index for index, botname in enumerate(bot_data.keys())}
@@ -24,14 +34,9 @@ index_to_botname = {v:k for k,v in botname_to_index.items()}
 n_feats = 2000
 doc_by_vocab = np.empty([len(bot_data), n_feats])
 
-def build_vectorizer(max_features, stop_words, norm='l2'):
-	return TfidfVectorizer(max_features = max_features, 
-								stop_words = stop_words,
-								max_df = 0.9,
-								min_df = 1,
-								norm = norm)
 	
-tfidf_vec = build_vectorizer(n_feats, "english")
+tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
+
 doc_by_vocab = tfidf_vec.fit_transform([bot_data[d] for d in bot_data.keys()]).toarray()
 
 def top_n_cos(n,query_string, tfidf):
@@ -52,10 +57,11 @@ def similar_names(query, msgs):
 def getUserCommentResults(query, bot_names_list, user_comments):
 	results = {}
 
-	if (query in user_result_dict.keys()):
-		sorted_by_score = user_result_dict[query]
+	if (query in result_dict.keys()):
+		results = result_dict[query]
+		sorted_by_score = sorted(results, key=lambda tup: tup[1])
 
-		top5 = sorted_by_score[5:]
+		top5 = sorted_by_score[::-1][5:]
 		if top5:
 			max_score = float(top5[0][1])
 
