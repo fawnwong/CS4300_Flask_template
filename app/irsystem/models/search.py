@@ -115,7 +115,7 @@ def commentAnalysis(query_topics, json_file):
 		user_sentiment = json.loads(myfile.read())
 
 	# if we get categories from query, show results; otherwise show error
-	if len(query_topics.items()) > 1:
+	if len(query_topics.items()) > 0:
 
 		# find top 10 results for each query topic
 		top_results = []
