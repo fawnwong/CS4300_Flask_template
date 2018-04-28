@@ -19,9 +19,10 @@ bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb
 
 #with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
 #	big_bot_data = json.loads(f.readlines()[0])
-big_bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/big_bot_data.p'), "rb" ) )
+#big_bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/big_bot_data.p'), "rb" ) )
 result_dict = cPickle.load( open(os.path.join(APP_ROOT, '../data/user_results.p'), "rb" ) )
-# json.dump(big_bot_data, open('BigBotComments.json', 'w'), cls=NumpyEncoder)
+with open(os.path.join(APP_ROOT, '../data/user_sentiment.json')) as myfile:
+	user_sentiment = json.loads(myfile.read())# json.dump(big_bot_data, open('BigBotComments.json', 'w'), cls=NumpyEncoder)
 # awsurl = urllib.urlopen('https://s3.us-east-2.amazonaws.com/beepboop4300/BigBotComments.json')
 # json.load(awsurl)
 # # Read numpy array from a json file (where FILE_NAME is an S3 location or local file)
@@ -37,8 +38,8 @@ doc_by_vocab = np.empty([len(bot_data), n_feats])
 
 	
 tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
-
-doc_by_vocab = tfidf_vec.fit_transform([bot_data[d] for d in bot_data.keys()]).toarray()
+doc_by_vocab = cPickle.load( open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ) )
+#doc_by_vocab = tfidf_vec.fit_transform([bot_data[d] for d in bot_data.keys()]).toarray()
 
 def top_n_cos(n,query_string, tfidf):
 	q_vec = tfidf.transform([query_string]).toarray()
@@ -55,48 +56,20 @@ def similar_names(query, msgs):
 	li.sort(key=lambda x: x[0])
 	return li[0:5]
 
-'''
-def getUserCommentResults(query, bot_names_list, user_comments):
-	results = {}
-
-	if (query in result_dict.keys()):
-		results = result_dict[query]
-		sorted_by_score = sorted(results, key=lambda tup: tup[1])
-
-		top5 = sorted_by_score[::-1][5:]
-		if top5:
-			max_score = float(top5[0][1])
-
-		# get bot list from input csv
-		with open(os.path.join(APP_ROOT, '../data/'+bot_names_list)) as csvfile:
-			reader = csv.reader(csvfile) 
-			bot_list = list(reader)
-
-		final_results = []
-		if top5:
-			for result in top5:
-				bot_index = int(result[0])
-				bot_name = bot_list[bot_index][0]
-				bot_score = float(result[1]) / max_score
-				final_results.append((bot_name,bot_score))
-			return final_results
-	return False
-'''
+lexicon = Empath()
+lexicon.create_category("funny",["funny","lol","hilarious", "haha", "joke"])
+#lexicon.create_category("silly",["silly","dumb","ridiculous", "stupid", "childish", "fun"])
+lexicon.create_category("stupid",["stupid","dumb","pointless", "why", "wrong"])
+lexicon.create_category("good", ["good", "great", "wonderful", "fantastic", "useful", "appreciated"])
+lexicon.create_category("bad",["bad", "wrong", "inaccurate", "stupid", "disagree"])
+lexicon.create_category("useful", ["good", "function", "effective", "interesting", "learn"])
+lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"])
+#lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
+lexicon.create_category("moderating", ["moderating", "mod", "moderate", "rules", "comment", "removed"])
+lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
 
 def queryAnalysis(input_query):
 	# initialize with our own categories
-	lexicon = Empath()
-	lexicon.create_category("funny",["funny","lol","hilarious", "haha", "joke"])
-	lexicon.create_category("silly",["silly","dumb","ridiculous", "stupid", "childish", "fun"])
-	lexicon.create_category("stupid",["stupid","dumb","pointless", "why", "wrong"])
-	lexicon.create_category("good", ["good", "great", "wonderful", "fantastic", "useful", "appreciated"])
-	lexicon.create_category("bad",["bad", "wrong", "inaccurate", "stupid", "disagree"])
-	lexicon.create_category("useful", ["good", "function", "effective", "interesting", "learn"])
-	lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"])
-	lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
-	lexicon.create_category("moderating", ["moderating", "mod", "moderate", "rules", "comment", "removed"])
-	lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
-
 	# get empath categories from query
 	query_sentiment = lexicon.analyze(input_query.lower(), normalize=True)
 	relevant_query_topics = {k: v for k, v in query_sentiment.items() if v > 0}
@@ -111,8 +84,6 @@ def commentAnalysis(query_topics, json_file):
 	# cPickle.load( open(os.path.join(APP_ROOT, ('../data/' + pickle_file)), "rb" ) )
 	
 	# use json instead:
-	with open(os.path.join(APP_ROOT, '../data/'+json_file)) as myfile:
-		user_sentiment = json.loads(myfile.read())
 
 	# if we get categories from query, show results; otherwise show error
 	if len(query_topics.items()) > 0:
