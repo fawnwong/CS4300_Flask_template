@@ -7,27 +7,15 @@ import os
 import csv
 import re
 import cPickle
-# from app.irsystem.models.helpers import *
-# from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 import urllib
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
-#with open(os.path.join(APP_ROOT, '../data/data.json')) as f:
-#	bot_data = json.loads(f.readlines()[0])
+
 bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
 
-
-#with open(os.path.join(APP_ROOT, '../data/BigBotComments.json')) as f:
-#	big_bot_data = json.loads(f.readlines()[0])
-#big_bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/big_bot_data.p'), "rb" ) )
 result_dict = cPickle.load( open(os.path.join(APP_ROOT, '../data/user_results.p'), "rb" ) )
 with open(os.path.join(APP_ROOT, '../data/user_sentiment.json')) as myfile:
-	user_sentiment = json.loads(myfile.read())# json.dump(big_bot_data, open('BigBotComments.json', 'w'), cls=NumpyEncoder)
-# awsurl = urllib.urlopen('https://s3.us-east-2.amazonaws.com/beepboop4300/BigBotComments.json')
-# json.load(awsurl)
-# # Read numpy array from a json file (where FILE_NAME is an S3 location or local file)
-# BigBotComments = json.load(awsurl, object_hook=json_numpy_obj_hook, encoding='utf8')
-
+	user_sentiment = json.loads(myfile.read())
 
 bot_names = bot_data.keys()
 botname_to_index = {botname:index for index, botname in enumerate(bot_data.keys())}
@@ -38,10 +26,7 @@ doc_by_vocab = np.empty([len(bot_data), n_feats])
 
 	
 tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
-#reply_tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/replyvectorizer.p'), "rb" ) )
-#doc_by_vocab = cPickle.load( open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ) )
 
-# doc_by_vocab = tfidf_vec.transform([bot_data[d] for d in bot_data.keys()]).toarray()
 doc_by_vocab = np.load(open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ), allow_pickle = True, fix_imports = True)
 
 
@@ -50,8 +35,6 @@ def top_n_cos(n,query_string, tfidf):
 	cosines = np.array([np.dot(q_vec, d) for d in doc_by_vocab]).T[0]
 	args = np.argsort(cosines)[::-1][:n]
 	return [(index_to_botname[x], bot_data[index_to_botname[x]]) for x in args]
-
-print(top_n_cos(5, "gif edit", tfidf_vec))
 
 def edit_distance(query_str, msg_str):
 	return Levenshtein.distance(query_str.lower(), msg_str.lower())
