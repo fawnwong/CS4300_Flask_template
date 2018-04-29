@@ -38,14 +38,19 @@ doc_by_vocab = np.empty([len(bot_data), n_feats])
 
 	
 tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
-doc_by_vocab = cPickle.load( open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ) )
-#doc_by_vocab = tfidf_vec.fit_transform([bot_data[d] for d in bot_data.keys()]).toarray()
+#reply_tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/replyvectorizer.p'), "rb" ) )
+#doc_by_vocab = cPickle.load( open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ) )
+
+doc_by_vocab = tfidf_vec.transform([bot_data[d] for d in bot_data.keys()]).toarray()
+
 
 def top_n_cos(n,query_string, tfidf):
 	q_vec = tfidf.transform([query_string]).toarray()
 	cosines = np.array([np.dot(q_vec, d) for d in doc_by_vocab]).T[0]
 	args = np.argsort(cosines)[::-1][:n]
 	return [(index_to_botname[x], bot_data[index_to_botname[x]]) for x in args]
+
+print(top_n_cos(5, "gif edit", tfidf_vec))
 
 def edit_distance(query_str, msg_str):
 	return Levenshtein.distance(query_str.lower(), msg_str.lower())
