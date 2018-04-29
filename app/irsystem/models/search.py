@@ -99,36 +99,31 @@ def bot_to_list(query, query_type):
 		return []
 	if query_type == "name":
 		edit_dist = similar_names(query, bot_names)
-		data = [{"rank": "1", "result": {"name": edit_dist[0][1], "comment": "A Comment 1", "link": "http://reddit.com/u/"+ edit_dist[0][1], "category": "bot_name"}},
-			{"rank": "2",
-			"result":{"name": edit_dist[1][1], "comment": "A Comment 2", "link": "http://reddit.com/u/" + edit_dist[1][1], "category": "bot_name"}
-					 },
-			{"rank": "3",
-			"result": {"name": edit_dist[2][1], "comment": "A Comment 3", "link": "http://reddit.com/u/" + edit_dist[2][1], "category": "bot_name"}
-					 },
-			{"rank": "4",
-			"result": {"name": edit_dist[3][1], "comment": "A Comment 4", "link": "http://reddit.com/u/" + edit_dist[3][1], "category": "bot_name"}
-					 },
-			{"rank": "5",
-			"result": {"name": edit_dist[4][1], "comment": "A Comment 5", "link":"http://reddit.com/u/" + edit_dist[4][1], "category": "bot_name"}
-					 }
-			]
+		data = []
+		for i in len(edit_dist):
+			entry_dict = {}
+			entry_dict["rank"] = str(i+1)
+			res_dict = {}
+			res_dict["name"] = edit_dist[i][1]
+			res_dict["comment"] = "---"
+			res_dict["link"] = "http://reddit.com/u/"+ edit_dist[i][1]
+			res_dict["category"] = "bot_name"
+			entry_dict["result"] = res_dict
+			data.append(entry_dict)
 	elif query_type == "bot-com":
 		cos_sim = top_n_cos(5,query, tfidf_vec)
-		data = [{"rank": "1", "result": {"name": cos_sim[0][0], "comment": "B Comment 1", "link": "http://reddit.com/u/"+cos_sim[0][0], "category": "bot_comments"}},
-			{"rank": "2",
-			"result":{"name": cos_sim[1][0], "comment": "B Comment 2", "link": "http://reddit.com/u/"+cos_sim[1][0], "category": "bot_comments"}
-					 },
-			{"rank": "3",
-			"result": {"name": cos_sim[2][0], "comment": "B Comment 3", "link": "http://reddit.com/u/"+cos_sim[2][0], "category": "bot_comments"}
-					 },
-			{"rank": "4",
-			"result": {"name": cos_sim[3][0], "comment": "B Comment 4", "link": "http://reddit.com/u/"+cos_sim[3][0], "category": "bot_comments"}
-					 },
-			{"rank": "5",
-			"result": {"name": cos_sim[4][0], "comment": "B Comment 5", "link": "http://reddit.com/u/"+cos_sim[4][0], "category": "bot_comments"}
-					 }
-			]
+		data = []
+		for i in len(cos_sim):
+			entry_dict = {}
+			entry_dict["rank"] = str(i+1)
+			res_dict = {}
+			res_dict["name"] = cos_sim[i][0]
+			res_dict["comment"] = "---"
+			res_dict["link"] = "http://reddit.com/u/"+ edit_dist[i][0]
+			res_dict["category"] = "bot_name"
+			entry_dict["result"] = res_dict
+			data.append(entry_dict)
+
 	else:
 		'''
 		bot_names_list = 'bot_names.csv'
@@ -147,20 +142,17 @@ def bot_to_list(query, query_type):
 		if not myresults:
 			myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
 
-		data = [{"rank": "1", "result": {"name": myresults[0][0], "comment": "C Comment 1", "link": "http://reddit.com/u/" + myresults[0][0], "category": "user_comments"}},
-			{"rank": "2",
-			"result":{"name": myresults[1][0], "comment": "C Comment 2", "link": "http://reddit.com/u/" + myresults[1][0], "category": "user_comments"}
-					 },
-			{"rank": "3",
-			"result": {"name": myresults[2][0], "comment": "C Comment 2", "link": "http://reddit.com/u/" + myresults[2][0], "category": "user_comments"}
-					 },
-			{"rank": "4",
-			"result": {"name": myresults[3][0], "comment": "C Comment 2", "link": "http://reddit.com/u/" + myresults[3][0], "category": "user_comments"}
-					 },
-			{"rank": "5",
-			"result": {"name": myresults[4][0], "comment": "C Comment 2", "link": "http://reddit.com/u/" + myresults[4][0], "category": "user_comments"}
-					 }
-			]
+		data = []
+		for i in len(myresults):
+			entry_dict = {}
+			entry_dict["rank"] = str(i+1)
+			res_dict = {}
+			res_dict["name"] = myresults[i][0]
+			res_dict["comment"] = "---"
+			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]
+			res_dict["category"] = "bot_name"
+			entry_dict["result"] = res_dict
+			data.append(entry_dict)
 
 	return data
 
