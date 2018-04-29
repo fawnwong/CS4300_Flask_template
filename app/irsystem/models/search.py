@@ -41,7 +41,8 @@ tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "
 #reply_tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/replyvectorizer.p'), "rb" ) )
 #doc_by_vocab = cPickle.load( open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ) )
 
-doc_by_vocab = tfidf_vec.transform([bot_data[d] for d in bot_data.keys()]).toarray()
+# doc_by_vocab = tfidf_vec.transform([bot_data[d] for d in bot_data.keys()]).toarray()
+doc_by_vocab = np.load(open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ), allow_pickle = True, fix_imports = True)
 
 
 def top_n_cos(n,query_string, tfidf):
