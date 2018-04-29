@@ -10,40 +10,28 @@ import cPickle
 import urllib
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
+
+bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
+
 # result_dict = cPickle.load( open(os.path.join(APP_ROOT, '../data/user_results.p'), "rb" ) )
-# with open(os.path.join(APP_ROOT, '../data/user_sentiment.json')) as myfile:
-# 	user_sentiment = json.loads(myfile.read())
+with open(os.path.join(APP_ROOT, '../data/user_sentiment.json')) as myfile:
+	user_sentiment = json.loads(myfile.read())
 
-# bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
+bot_names = bot_data.keys()
+botname_to_index = {botname:index for index, botname in enumerate(bot_data.keys())}
+index_to_botname = {v:k for k,v in botname_to_index.items()}
 
-# bot_names = bot_data.keys()
-# botname_to_index = {botname:index for index, botname in enumerate(bot_data.keys())}
-# index_to_botname = {v:k for k,v in botname_to_index.items()}
+n_feats = 2000
+doc_by_vocab = np.empty([len(bot_data), n_feats])
 
-# n_feats = 2000
-# doc_by_vocab = np.empty([len(bot_data), n_feats])
 	
-# tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
+tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
 
-# doc_by_vocab = np.load(open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ), allow_pickle = True, fix_imports = True)
+doc_by_vocab = np.load(open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ), allow_pickle = True, fix_imports = True)
 
 
-def top_n_cos(n,query_string):
-	bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
-
-	bot_names = bot_data.keys()
-	botname_to_index = {botname:index for index, botname in enumerate(bot_data.keys())}
-	index_to_botname = {v:k for k,v in botname_to_index.items()}
-
-	n_feats = 2000
-	doc_by_vocab = np.empty([len(bot_data), n_feats])
-		
-	tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "rb" ) )
-
-	# doc_by_vocab = np.load(open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ), allow_pickle = True, fix_imports = True)
-	doc_by_vocab = tfidf_vec.fit_transform([bot_data[d] for d in bot_data.keys()]).toarray()
-
-	q_vec = tfidf_vec.transform([query_string]).toarray()
+def top_n_cos(n,query_string, tfidf):
+	q_vec = tfidf.transform([query_string]).toarray()
 	cosines = np.array([np.dot(q_vec, d) for d in doc_by_vocab]).T[0]
 	args = np.argsort(cosines)[::-1][:n]
 	return [(index_to_botname[x], bot_data[index_to_botname[x]]) for x in args]
@@ -52,12 +40,8 @@ def edit_distance(query_str, msg_str):
 	return Levenshtein.distance(query_str.lower(), msg_str.lower())
 
 
-def similar_names(query):
-
-	bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
-	bot_names = bot_data.keys()
-
-	li = [(edit_distance(query, bot_name),bot_name) for bot_name in bot_names]
+def similar_names(query, msgs):
+	li = [(edit_distance(query, msg),msg) for msg in msgs]
 	li.sort(key=lambda x: x[0])
 	return li[0:5]
 
@@ -91,9 +75,6 @@ def commentAnalysis(query_topics, json_file):
 	# use json instead:
 
 	# if we get categories from query, show results; otherwise show error
-	with open(os.path.join(APP_ROOT, '../data/user_sentiment.json')) as myfile:
-		user_sentiment = json.loads(myfile.read())
-
 	if len(query_topics.items()) > 0:
 
 		# find top 10 results for each query topic
@@ -117,7 +98,7 @@ def bot_to_list(query, query_type):
 	if query == None:
 		return []
 	if query_type == "name":
-		edit_dist = similar_names(query)
+		edit_dist = similar_names(query, bot_names)
 		data = [{"rank": "1", "result": {"name": edit_dist[0][1], "comment": "A Comment 1", "link": "http://reddit.com/u/"+ edit_dist[0][1], "category": "bot_name"}},
 			{"rank": "2",
 			"result":{"name": edit_dist[1][1], "comment": "A Comment 2", "link": "http://reddit.com/u/" + edit_dist[1][1], "category": "bot_name"}
@@ -133,7 +114,7 @@ def bot_to_list(query, query_type):
 					 }
 			]
 	elif query_type == "bot-com":
-		cos_sim = top_n_cos(5,query)
+		cos_sim = top_n_cos(5,query, tfidf_vec)
 		data = [{"rank": "1", "result": {"name": cos_sim[0][0], "comment": "B Comment 1", "link": "http://reddit.com/u/"+cos_sim[0][0], "category": "bot_comments"}},
 			{"rank": "2",
 			"result":{"name": cos_sim[1][0], "comment": "B Comment 2", "link": "http://reddit.com/u/"+cos_sim[1][0], "category": "bot_comments"}
