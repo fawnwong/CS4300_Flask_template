@@ -68,8 +68,13 @@ function showModal(div) {
   var modal_body_div = modal_content_div.getElementsByClassName("modal-body")[0];
   var modal_comment_div = modal_body_div.getElementsByClassName("modal-comment")[0];
 
-  console.log(modal_comment_div.innerText);
   modal_comment_div.innerHTML = extractContent(modal_comment_div.innerText, true);
+
+  window.onclick = function(event) {
+    if (event.target == div) {
+        div.style.display = "none";
+    }
+  }
 }
 
 function closeModal(div) {
