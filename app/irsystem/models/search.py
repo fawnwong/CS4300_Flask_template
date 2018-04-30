@@ -50,14 +50,13 @@ def similar_names(query, msgs):
 
 lexicon = Empath()
 lexicon.create_category("funny",["funny","lol","hilarious", "haha", "joke"])
-lexicon.create_category("silly",["silly","ridiculous","childish"])
-lexicon.create_category("silly",["silly","ridiculous","childish"])
+#lexicon.create_category("silly",["silly","ridiculous","childish"])
 lexicon.create_category("stupid",["stupid", "dumb","pointless", "wrong"])
-lexicon.create_category("good", ["good", "great", "perfect", "wonderful", "fantastic"]) 
+#lexicon.create_category("good", ["good", "great", "perfect", "wonderful", "fantastic"]) 
 lexicon.create_category("bad",["bad", "wrong", "waste", "inaccurate", "stupid", "disagree", "sad"])
 lexicon.create_category("useful", ["good", "function", "effective", "interesting"])
 lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"])
-lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
+#lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
 lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
 lexicon.create_category("shocking", ["shocked", "wtf", "shit", "jesus", "christ", "yikes"])
 
@@ -78,7 +77,7 @@ def queryAnalysis(query, query_sentiment):
 
 	# go through each word to check if topic 
 	for word in query.split():
-		if word in query_sentiment.keys():
+		if word in user_sentiment.keys():
 			cat_weights[word] = cat_weights.get(word, 0.) + identical_cat_weight
 
 
@@ -97,7 +96,8 @@ def commentAnalysis(query_topics):
 		
 		for topic, score in query_topics.items():
 			# pull top 10 results for that topic; multiply score by query weight 
-			weighted_topic_ranking =  [ (b, s * score, x, y) for (b, s, x, y) in user_sentiment[topic][-10:] ]
+			#weighted_topic_ranking =  [ (b, s * score, x, y) for (b, s, x, y) in user_sentiment[topic][-10:] ]
+			weighted_topic_ranking =  [ (b, s * score, x, y) for (b, s, x, y) in user_sentiment[topic] ]
 
 			# add to unordered list of top rankings
 			top_results['results'] += weighted_topic_ranking
@@ -122,7 +122,8 @@ def commentAnalysis(query_topics):
 
 			# sort again since we combined multiple categories 
 			re_sorted_by_score = sorted(totals_list, key=lambda tup: tup[1])
-			top_results['results'] = list(reversed(re_sorted_by_score[-5:]))
+			#top_results['results'] = list(reversed(re_sorted_by_score[-5:]))
+			top_results['results'] = list(reversed(re_sorted_by_score))
 
 
 		bot_stuff = {}
@@ -173,10 +174,15 @@ def commentAnalysis(query_topics):
 # 	else: 
 # 		# no relevant categories found 
 # 		return []
-
-def bot_to_list(query, query_type):
+def bot_to_list(query, query_type, category):
 	if query == None:
-		return []
+		return []	
+	if category != "no category":
+		category_list = user_sentiment[category]
+		category_names = []
+		for bot in category_list:
+			category_names.append(bot[0])
+
 	if query_type == "name":
 		edit_dist = similar_names(query, bot_names)
 		data = []
@@ -193,7 +199,10 @@ def bot_to_list(query, query_type):
 			res_dict["link"] = "http://reddit.com/u/"+ edit_dist[i][1]
 			res_dict["category"] = "bot_name"
 			entry_dict["result"] = res_dict
-			data.append(entry_dict)
+			if category == "no category":
+				data.append(entry_dict)
+			elif edit_dist[i][1] in category_names:
+				data.append(entry_dict)
 	elif query_type == "bot-com":
 		cos_sim = top_n_cos(query, tfidf_vec)
 		data = []
@@ -210,7 +219,10 @@ def bot_to_list(query, query_type):
 			res_dict["link"] = "http://reddit.com/u/"+ cos_sim[i][0]
 			res_dict["category"] = "bot_comments"
 			entry_dict["result"] = res_dict
-			data.append(entry_dict)
+			if cateogry == "no cateogry":
+				data.append(entry_dict)
+			elif cos_sim[i][0] in cateogry_names:
+				data.append(entry_dict)
 
 	else:
 		'''
@@ -262,8 +274,10 @@ def bot_to_list(query, query_type):
 			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]
 			res_dict["category"] = "user_comments"
 			entry_dict["result"] = res_dict
-			data.append(entry_dict)	
-
+			if cateogry == "no cateogry":
+				data.append(entry_dict)	
+			elif myresults[i][0] in cateogry_names:
+				data.append(entry_dict)	
 	return data
 
 

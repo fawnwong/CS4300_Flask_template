@@ -51,7 +51,21 @@ def search():
 		# 		{"name": "C Bot 5", "comment": "C Comment 5", "link": "http://www.google.com", "category": "user_comments", "score": 0.194}
 		# 	]},
 		# ]
-		data = bot_to_list(query, query_type)
+
+
+		#replace no category with a category variable
+		# lexicon.create_category("funny",["funny","lol","hilarious", "haha", "joke"])
+		# lexicon.create_category("silly",["silly","ridiculous","childish"])
+		# lexicon.create_category("silly",["silly","ridiculous","childish"])
+		# lexicon.create_category("stupid",["stupid", "dumb","pointless", "wrong"])
+		# lexicon.create_category("good", ["good", "great", "perfect", "wonderful", "fantastic"]) 
+		# lexicon.create_category("bad",["bad", "wrong", "waste", "inaccurate", "stupid", "disagree", "sad"])
+		# lexicon.create_category("useful", ["good", "function", "effective", "interesting"])
+		# lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"])
+		# lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
+		# lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
+		# lexicon.create_category("shocking", ["shocked", "wtf", "shit", "jesus", "christ", "yikes"])
+		data = bot_to_list(query, query_type, "no category")
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
 
