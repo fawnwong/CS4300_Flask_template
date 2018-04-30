@@ -49,13 +49,13 @@
             <h2 id="output">{{output_message}}</h2> <br>
             {% for d in data %}   
             <!-- add scores, highlight comments --> 
-                <div class="row fade-in by-bot-name">
+                <!-- <div class="row fade-in by-bot-name"> -->
                     <div class="result">
                         <p class="result-name">{{ d.result.name }}</p><br>
-                        <p class="result-comment">{{ d.result.comment }}</p><br>
+                        <p class="result-comment">{{ d.result.reliability }}</p><br>
                         <p class="result-learn"> learn more >></p>
                     </div>
-                </div>
+                <!-- </div> -->
             {% endfor %}
         {% endif %}
         </form>
@@ -68,13 +68,15 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
                 <h5 class="modal-title" id="exampleModalLongTitle">bot.name</h5>
-                <p>Rank <span class="rank">bot.rank</span></p>
+                <p>Rank <span class="rank">bot.score</span></p>
                 <p><span class="rank">bot.karma</span> Reddit karma</p>
             </div>
             <div class="modal-body">
+                <h6>Example Comment</h6>
                 <div class="modal-comment">
                     <p>bot.comment</p>
                 </div>
+                <div class="modal-reliability">We are bot.reliability% sure this Reddit user is a bot.</div>
             </div>
             <div class="modal-footer">
                 <p><a href="#">See me on Reddit >></a></p>

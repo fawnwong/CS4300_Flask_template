@@ -56,8 +56,9 @@
     position:absolute;
     top: 2%;
     right: 1%;
+    font-family: 'Work Sans', sans-serif;
     font-size: 8px;
-    font-weight: 200px;
+    font-weight: 200;
     color: #aaaaaa;
 }
 
@@ -95,7 +96,8 @@ h5 {
 }
 
 .result {
-    width: 100%;
+    display: inline-block;
+    width: 30%;
     height: 110px;
     border: 1px solid #aaaaaa;
     margin-top: 20px;
@@ -326,6 +328,20 @@ button:focus {
 
 .close {
     line-height: 0;
+}
+
+.modal-comment {
+    border: 1px solid #888888;
+    border-radius: 3px;
+    padding: 15px;
+}
+
+.modal-reliability {
+    font-size: 10px;
+    font-weight: 200;
+    color: #aaaaaa;
+    text-align: center;
+    margin: 5px 0px;
 }
 
 .rank {
