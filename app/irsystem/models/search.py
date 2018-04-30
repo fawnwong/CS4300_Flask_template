@@ -219,9 +219,9 @@ def bot_to_list(query, query_type, category):
 			res_dict["link"] = "http://reddit.com/u/"+ cos_sim[i][0]
 			res_dict["category"] = "bot_comments"
 			entry_dict["result"] = res_dict
-			if cateogry == "no cateogry":
+			if category == "no category":
 				data.append(entry_dict)
-			elif cos_sim[i][0] in cateogry_names:
+			elif cos_sim[i][0] in category_names:
 				data.append(entry_dict)
 
 	else:
@@ -274,9 +274,9 @@ def bot_to_list(query, query_type, category):
 			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]
 			res_dict["category"] = "user_comments"
 			entry_dict["result"] = res_dict
-			if cateogry == "no cateogry":
+			if category == "no category":
 				data.append(entry_dict)	
-			elif myresults[i][0] in cateogry_names:
+			elif myresults[i][0] in category_names:
 				data.append(entry_dict)	
 	return data
 
