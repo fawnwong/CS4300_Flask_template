@@ -33,10 +33,10 @@ doc_by_vocab = tfidf_vec.transform([bot_data[d] for d in bot_data.keys()]).toarr
 bot_info = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_info.p'), "rb" ) )
 
 
-def top_n_cos(n,query_string, tfidf):
+def top_n_cos(query_string, tfidf):
 	q_vec = tfidf.transform([query_string]).toarray()
 	cosines = np.array([np.dot(q_vec, d) for d in doc_by_vocab]).T[0]
-	args = np.argsort(cosines)[::-1][:n]
+	args = np.argsort(cosines)[::-1]
 	return [(index_to_botname[x], cosines[x]) for x in args]
 
 def edit_distance(query_str, msg_str):
@@ -46,7 +46,7 @@ def edit_distance(query_str, msg_str):
 def similar_names(query, msgs):
 	li = [(edit_distance(query, msg),msg) for msg in msgs]
 	li.sort(key=lambda x: x[0])
-	return li[0:5]
+	return li
 
 lexicon = Empath()
 lexicon.create_category("funny",["funny","lol","hilarious", "haha", "joke"])
@@ -83,12 +83,12 @@ def commentAnalysis(query_topics, json_file):
 		# find top 10 results for each query topic
 		top_results = []
 		for topic, key in query_topics.items():
-			top_results += user_sentiment[topic][-10:]
+			top_results += user_sentiment[topic]
 
 		# sort again if we combined multiple categories 
 		if len(query_topics.items()) > 1:
 			re_sorted_by_score = sorted(top_results, key=lambda tup: tup[1])
-			return list(reversed(re_sorted_by_score[-10:]))
+			return list(reversed(re_sorted_by_score))
 		
 		# if one category, it's already been sorted in preprocessing
 		return top_results
@@ -118,7 +118,7 @@ def bot_to_list(query, query_type):
 			entry_dict["result"] = res_dict
 			data.append(entry_dict)
 	elif query_type == "bot-com":
-		cos_sim = top_n_cos(5,query, tfidf_vec)
+		cos_sim = top_n_cos(query, tfidf_vec)
 		data = []
 		for i in range(len(cos_sim)):
 			entry_dict = {}
