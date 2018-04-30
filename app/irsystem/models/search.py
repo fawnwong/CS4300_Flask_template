@@ -113,7 +113,7 @@ def commentAnalysis(query_topics):
 			# remake results and add together any duplicates
 			totals = {}
 			#print(top_results['results'])
-			for name, v, x, y in top_results['results']:
+			for name, (v, x, y) in top_results['results']:
 				totals[name] = totals.get(name, (0., 0, 0.))
 				totals[name] = (totals[name][0] + v, totals[name][1] + x, totals[name][2] + y)
 
