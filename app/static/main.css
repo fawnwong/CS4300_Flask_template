@@ -320,6 +320,7 @@ button:focus {
 .modal {
     background-color: rgba(0,0,0,0.5);
     font-family: 'Work Sans', sans-serif;
+    font-weight: 300;
 }
 
 .modal-content {
@@ -334,6 +335,10 @@ button:focus {
     text-align: center;
 }
 
+.modal-body {
+    width: 100%;
+}
+
 .modal-footer {
     border-top: unset;
 }
@@ -346,10 +351,13 @@ button:focus {
     border: 1px solid #888888;
     border-radius: 3px;
     padding: 15px;
+    margin: 10px 0px;
+    width: 100%;
 }
 
-.modal-reliability {
-    font-size: 10px;
+.modal-topics {
+    width: 100%;
+    font-size: 12px;
     font-weight: 200;
     color: #aaaaaa;
     text-align: center;
