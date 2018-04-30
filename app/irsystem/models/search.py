@@ -30,6 +30,9 @@ tfidf_vec = cPickle.load( open(os.path.join(APP_ROOT, '../data/vectorizer.p'), "
 # doc_by_vocab = np.load(open(os.path.join(APP_ROOT, '../data/doc_by_vocab.p'), "rb" ), encoding="bytes",allow_pickle = True, fix_imports = True)
 doc_by_vocab = tfidf_vec.transform([bot_data[d] for d in bot_data.keys()]).toarray()
 
+bot_info = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_info.p'), "rb" ) )
+
+
 def top_n_cos(n,query_string, tfidf):
 	q_vec = tfidf.transform([query_string]).toarray()
 	cosines = np.array([np.dot(q_vec, d) for d in doc_by_vocab]).T[0]
@@ -105,8 +108,11 @@ def bot_to_list(query, query_type):
 			entry_dict["rank"] = str(i+1)
 			res_dict = {}
 			res_dict["name"] = edit_dist[i][1]
+			(karma, score, comment) = bot_info[res_dict["name"]]
+			res_dict["karma"] = karma
+			res_dict["reliability"] = score
+			res_dict["comment"] = comment
 			res_dict["score"] = edit_dist[i][0]
-			res_dict["comment"] = "---"
 			res_dict["link"] = "http://reddit.com/u/"+ edit_dist[i][1]
 			res_dict["category"] = "bot_name"
 			entry_dict["result"] = res_dict
@@ -119,10 +125,13 @@ def bot_to_list(query, query_type):
 			entry_dict["rank"] = str(i+1)
 			res_dict = {}
 			res_dict["name"] = cos_sim[i][0]
+			(karma, score, comment) = bot_info[res_dict["name"]]
+			res_dict["karma"] = karma
+			res_dict["reliability"] = score
+			res_dict["comment"] = comment
 			res_dict["score"] = cos_sim[i][1]
-			res_dict["comment"] = "---"
 			res_dict["link"] = "http://reddit.com/u/"+ cos_sim[i][0]
-			res_dict["category"] = "bot_name"
+			res_dict["category"] = "bot_comments"
 			entry_dict["result"] = res_dict
 			data.append(entry_dict)
 
@@ -150,10 +159,13 @@ def bot_to_list(query, query_type):
 			entry_dict["rank"] = str(i+1)
 			res_dict = {}
 			res_dict["name"] = myresults[i][0]
+			(karma, score, comment) = bot_info[res_dict["name"]]
+			res_dict["karma"] = karma
+			res_dict["reliability"] = score
+			res_dict["comment"] = comment
 			res_dict["score"] = myresults[i][1]
-			res_dict["comment"] = "---"
 			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]
-			res_dict["category"] = "bot_name"
+			res_dict["category"] = "user_comments"
 			entry_dict["result"] = res_dict
 			data.append(entry_dict)	
 
