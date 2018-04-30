@@ -59,67 +59,63 @@
         <form id="results" class="form-inline global-search fade-in">
         {% if data %}
             <h2 id="output">{{output_message}}</h2> <br>
-            {% if data|length > 0 %}
-                {% for d in data %}   
-                <!-- add scores, highlight comments --> 
-                    <div class="result" onclick="showModal({{ d.result.name.replace('-','_') }})">
-                        <div class="result-left">
-                            <div id="icon"><img src="/static/icon.png" alt="beepboop" width="55"></div><br />
-                            <p>Score: <span class="rank">{{'%0.2f'| format(d.result.score|float)}}</span>
-                        </div>
-                        <div class="result-right">
-                            <p class="result-name">{{ d.result.name }}</p><br>
-                            <p class="result-topics">
-                                {% if d.result.stuff|length > 0 %} 
-                                topics:
-                                    {% for s in range(0,d.result.stuff|length) %}
-                                        {% if s == d.result.stuff|length - 1 %}
-                                            {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}.
-                                        {% else %}
-                                            {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
-                                        {% endif %}
-                                    {% endfor %}</p><br>
-                                {% else %}
-                                    <p>No relevant topics</p>
-                                {% endif %}
-                        </div>
+            {% for d in data %}   
+            <!-- add scores, highlight comments --> 
+                <div class="result" onclick="showModal({{ d.result.name.replace('-','_') }})">
+                    <div class="result-left">
+                        <div id="icon"><img src="/static/icon.png" alt="beepboop" width="55"></div><br />
+                        <p>Score: <span class="rank">{{'%0.2f'| format(d.result.score|float)}}</span>
                     </div>
-                    <div id="{{ d.result.name.replace('-','_') }}" class="modal animatetop">
-                        <!-- Modal content -->
-                        <div class="modal-content">
-                            <span class="close" onclick="closeModal({{ d.result.name.replace('-','_') }})">&times;</span>
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">{{ d.result.name }}</h5><br>
-                                <p>Score: <span class="rank">{{ d.result.score }}</span></p><br>
-                                <p><span class="rank">{{ d.result.karma }}</span> Reddit karma</p><br>
+                    <div class="result-right">
+                        <p class="result-name">{{ d.result.name }}</p><br>
+                        <p class="result-topics">
+                            {% if d.result.stuff|length != 0 %} 
+                            topics:
+                                {% for s in range(0,d.result.stuff|length) %}
+                                    {% if s == d.result.stuff|length - 1 %}
+                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}.
+                                    {% else %}
+                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
+                                    {% endif %}
+                                {% endfor %}</p><br>
+                            {% else %}
+                                <p>No relevant topics</p>
+                            {% endif %}
+                    </div>
+                </div>
+                <div id="{{ d.result.name.replace('-','_') }}" class="modal animatetop">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal({{ d.result.name.replace('-','_') }})">&times;</span>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">{{ d.result.name }}</h5><br>
+                            <p>Score: <span class="rank">{{ d.result.score }}</span></p><br>
+                            <p><span class="rank">{{ d.result.karma }}</span> Reddit karma</p><br>
+                        </div><br>
+                        <div class="modal-body">
+                            <h6>Example Comment</h6><br>
+                            <div class="modal-comment">
+                                {{ d.result.comment }}
                             </div><br>
-                            <div class="modal-body">
-                                <h6>Example Comment</h6><br>
-                                <div class="modal-comment">
-                                    {{ d.result.comment }}
-                                </div><br>
-                                {% if d.result.stuff %}
-                                <div class="modal-topics">
-                                    Relevant topics:
-                                    {% for s in range(0,d.result.stuff|length) %}
-                                        {% if s == d.result.stuff|length - 1 %}
-                                            {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}.
-                                        {% else %}
-                                            {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                            </div><br>
-                            <div class="modal-footer">
-                                <p><a href="{{ d.result.link }}">Find me on Reddit >></a></p>
+                            {% if d.result.stuff %}
+                            <div class="modal-topics">
+                                Relevant topics:
+                                {% for s in range(0,d.result.stuff|length) %}
+                                    {% if s == d.result.stuff|length - 1 %}
+                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}.
+                                    {% else %}
+                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
+                                    {% endif %}
+                                {% endfor %}
                             </div>
+                            {% endif %}
+                        </div><br>
+                        <div class="modal-footer">
+                            <p><a href="{{ d.result.link }}">Find me on Reddit >></a></p>
                         </div>
                     </div>
-                {% endfor %}
-            {% else %}
-                <p>Couldn't find anything, sorry!</p>
-            {% endif %}
+                </div>
+            {% endfor %}
         {% endif %}
         </form>
     </body>
