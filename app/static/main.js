@@ -9,9 +9,6 @@ $(document).ready(function () {
     var type = preprocess_1.substring(preprocess_1.lastIndexOf("=")+1,preprocess_1.lastIndexOf("&"));
     var preprocess_2 = preprocess_1.substring(0,preprocess_1.lastIndexOf("="));
     var input = preprocess_2.substring(preprocess_2.lastIndexOf("=")+1,preprocess_2.lastIndexOf("&"));        
-    document.getElementById("input").value = input;
-    document.getElementById("search-select").value = type;
-    document.getElementById("search-filter").value = filter;
   }
 });
 
