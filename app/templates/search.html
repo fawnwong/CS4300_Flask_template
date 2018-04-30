@@ -40,9 +40,9 @@
                 </div>
             </div>
         </form>
-        <div class="row fade-in" data-toggle="modal" data-target="#exampleModalCenter" data-bot="bot-bot">
+        <!-- <div class="row fade-in" data-toggle="modal" data-target="#exampleModalCenter" data-bot="bot-bot">
             modal
-        </div>
+        </div> -->
         <a name="results"></a>
         <form id="results" class="form-inline global-search">
         {% if data %}
@@ -51,16 +51,44 @@
             <!-- add scores, highlight comments --> 
                 <div class="row fade-in by-bot-name">
                     <div class="result">
-                        <p class="result-name">{{ d.result.name }}</p><br>
+                        <p class="result-name" onclick="showModal({{ d.result.name }})">{{ d.result.name }}</p><br>
                         <p class="result-comment">{{ d.result.comment }}</p><br>
                         <p class="result-learn"> learn more >></p>
                     </div>
                 </div>
+                <div id="{{ d.result.name }}" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal({{ d.result.name }})">&times;</span>
+                        <p>{{ d.result.name }}</p>
+                    </div>
+                </div>
+                <!-- <div class="modal fade" id="{{ d.result.name }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5 class="modal-title" id="exampleModalLongTitle">bot.name</h5>
+                            <p>Rank <span class="rank">bot.rank</span></p>
+                            <p><span class="rank">bot.karma</span> Reddit karma</p>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-comment">
+                                <p>bot.comment</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <p><a href="#">See me on Reddit >></a></p>
+                        </div>
+                    </div>
+                </div> -->
             {% endfor %}
         {% endif %}
         </form>
 
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -80,7 +108,7 @@
                 <p><a href="#">See me on Reddit >></a></p>
             </div>
             </div>
-        </div>
+        </div> -->
     </body>
 
 
