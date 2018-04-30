@@ -97,12 +97,27 @@ h5 {
 
 .result {
     display: inline-block;
-    width: 30%;
     height: 110px;
-    border: 1px solid #aaaaaa;
-    margin-top: 20px;
+    margin: 10px;
     text-align: left;
-    padding: 20px;
+}
+
+.result-left {
+    width: 120px;
+    padding: 15px;
+    text-align: center;
+    float: left;
+    display: block;
+}
+
+.result-right {
+    border: 1px solid #aaaaaa;
+    border-radius: 3px;
+    padding: 15px;
+    width: 240px;
+    height: 110px;
+    float: right;
+    display: block;
 }
 
 .result-name {

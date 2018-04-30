@@ -270,7 +270,7 @@ def bot_to_list(query, query_type, category):
 			res_dict["karma"] = karma
 			res_dict["reliability"] = score
 			res_dict["comment"] = comment
-			res_dict["score"] = myresults[i][1]
+			res_dict["score"] = myresults[i][1][0]
 			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]
 			res_dict["category"] = "user_comments"
 			entry_dict["result"] = res_dict
