@@ -97,7 +97,7 @@ def commentAnalysis(query_topics):
 		for topic, score in query_topics.items():
 			# pull top 10 results for that topic; multiply score by query weight 
 			#weighted_topic_ranking =  [ (b, s * score, x, y) for (b, s, x, y) in user_sentiment[topic][-10:] ]
-			weighted_topic_ranking =  [ (b, s * score, x, y) for (b, s, x, y) in user_sentiment[topic] ]
+			weighted_topic_ranking =  [ (b, (s * score, x, y)) for (b, s, x, y) in user_sentiment[topic] ]
 
 			# add to unordered list of top rankings
 			top_results['results'] += weighted_topic_ranking
@@ -129,7 +129,7 @@ def commentAnalysis(query_topics):
 		bot_stuff = {}
 		for cat, catlist in top_results.items():
 			if cat != 'results':
-				for bot, score, y, z in catlist:
+				for bot, (score, y, z) in catlist:
 					placeholder = bot_stuff.get(bot, [])
 					bot_stuff[bot] =  placeholder + [(cat, score)]
 
@@ -144,7 +144,7 @@ def commentAnalysis(query_topics):
 		return top_results['results'], bot_stuff
 	else: 
 		print("no relevant categories found")
-		return {}
+		return [], {}
 # def commentAnalysis(query_topics, json_file):
 
 # 	# get empath results from pickle file
@@ -256,7 +256,7 @@ def bot_to_list(query, query_type, category):
 		# else: 
 		# 	print("no relevant categories found")
 		myresults = []
-		if(len(query_topics.items())> 0):
+		if(len(query_topics.items()) > 0):
 			myresults, stuff = commentAnalysis(query_topics)
 
 		#if not myresults:
@@ -273,6 +273,7 @@ def bot_to_list(query, query_type, category):
 			res_dict["karma"] = karma
 			res_dict["reliability"] = score
 			res_dict["comment"] = comment
+			print(myresults[i])
 			res_dict["score"] = myresults[i][1][0]
 			res_dict["stuff"] = stuff[myresults[i][0]]
 			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]
