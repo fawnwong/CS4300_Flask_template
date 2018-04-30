@@ -96,7 +96,7 @@ def commentAnalysis(query_topics):
 		
 		for topic, score in query_topics.items():
 			# pull top 10 results for that topic; multiply score by query weight 
-			weighted_topic_ranking =  [ (b, s * score, x, y) for (b, s, x, y) in user_sentiment[topic][-10:] ]
+			weighted_topic_ranking =  [ (b, s * score, x, y) for (b, s, x, y) in user_sentiment[topic]]
 
 			# add to unordered list of top rankings
 			top_results['results'] += weighted_topic_ranking
@@ -121,7 +121,7 @@ def commentAnalysis(query_topics):
 
 			# sort again since we combined multiple categories 
 			re_sorted_by_score = sorted(totals_list, key=lambda tup: tup[1])
-			top_results['results'] = list(reversed(re_sorted_by_score[-5:]))
+			top_results['results'] = list(reversed(re_sorted_by_score))
 
 
 		bot_stuff = {}
