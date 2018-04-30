@@ -23,7 +23,7 @@
                     <img src="/static/bot.png" alt="happybot" height="342" width="254">
                 </div>
                 <div id="search-bar">
-                    <input id="input" type="text" name="search" class="form-input" placeholder="Do you know what you want your bot to do?">
+                    <input id="input" type="text" name="search" class="form-input" value="" placeholder="Do you know what you want your bot to do?">
                     <span class="bar"></span> 
                     <br>
                     <div class="left-align">
@@ -41,14 +41,18 @@
             </div>
         </form>
         <a name="results"></a>
-        <form id="results" class="form-inline global-search">
+        <form id="results" class="form-inline global-search fade-in">
         {% if data %}
             <h2 id="output">{{output_message}}</h2> <br>
             {% for d in data %}   
             <!-- add scores, highlight comments --> 
-                <div class="result">
-                    <p class="result-name" onclick="showModal({{ d.result.name }})">{{ d.result.name }}</p><br>
-                    <p class="result-comment">{{ d.result.comment }}</p><br>
+                <div class="result-left">
+                    <img src="/static/icon.png" alt="beepboop" width="65"><br />
+                    <p>Score: <span class="rank">{{'%0.2f'| format(d.result.score|float)}}</span>
+                </div>
+                <div class="result-right">
+                    <p class="result-name">{{ d.result.name }}</p><br>
+                    <p class="result-tags">{{ d.result.reliability }}</p><br>
                     <p class="result-learn"> learn more >></p>
                 </div>
                 <div id="{{ d.result.name }}" class="modal">
