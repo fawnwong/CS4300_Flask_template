@@ -10,6 +10,9 @@ net_id = "Fawn Wong (fyw6), Cindy Wang (cw653), Danna Greenberg (dg489), Stephan
 def search():
 	query = request.args.get('search')
 	query_type = request.args.get('search-type')
+	query_filter = request.args.get('search-filter')
+	if query_filter == "None":
+		query_filter = "no category"
 	if query == None:
 		data = []
 		output_message = ''
@@ -28,7 +31,7 @@ def search():
 		# lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"])
 		# lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
 		# lexicon.create_category("shocking", ["shocked", "wtf", "shit", "jesus", "christ", "yikes"])
-		data = bot_to_list(query, query_type, "no category")
+		data = bot_to_list(query, query_type, query_filter)
 	return render_template('search.html', name=project_name, netid=net_id, output_message=output_message, data=data)
 
 
