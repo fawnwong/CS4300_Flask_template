@@ -141,7 +141,7 @@ def commentAnalysis(query_topics):
 
 		
 		# if one topic, it's already been sorted in preprocessing
-		return top_results['results']#, bot_stuff
+		return top_results['results'], bot_stuff
 	else: 
 		print("no relevant categories found")
 		return {}
@@ -255,10 +255,11 @@ def bot_to_list(query, query_type, category):
 		# else: 
 		# 	print("no relevant categories found")
 
-		myresults = commentAnalysis(query_topics)
+		myresults, stuff = commentAnalysis(query_topics)
 
 		if not myresults:
 			myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
+			stuff = {}
 
 		data = []
 		for i in range(len(myresults)):
@@ -271,6 +272,7 @@ def bot_to_list(query, query_type, category):
 			res_dict["reliability"] = score
 			res_dict["comment"] = comment
 			res_dict["score"] = myresults[i][1][0]
+			res_dict["stuff"] = stuff[myresults[i][0]]
 			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]
 			res_dict["category"] = "user_comments"
 			entry_dict["result"] = res_dict
