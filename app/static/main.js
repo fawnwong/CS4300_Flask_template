@@ -74,6 +74,7 @@ function closeModal(div) {
   div.style.display = "none";
 }
 
+
 // var msg = window.location.href.match(/\?search=(.*)/);
 // document.getElementById("input").value = msg[1];
 // var msg = window.location.href.match(/\?search-type=(.*)/);
