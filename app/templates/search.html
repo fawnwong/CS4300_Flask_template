@@ -46,14 +46,15 @@
             <h2 id="output">{{output_message}}</h2> <br>
             {% for d in data %}   
             <!-- add scores, highlight comments --> 
-                <div class="result-left">
-                    <img src="/static/icon.png" alt="beepboop" width="65"><br />
-                    <p>Score: <span class="rank">{{'%0.2f'| format(d.result.score|float)}}</span>
-                </div>
-                <div class="result-right">
-                    <p class="result-name">{{ d.result.name }}</p><br>
-                    <p class="result-tags">{{ d.result.reliability }}</p><br>
-                    <p class="result-learn"> learn more >></p>
+                <div class="result" onclick="showModal({{ d.result.name }})">
+                    <div class="result-left">
+                        <div id="icon"><img src="/static/icon.png" alt="beepboop" width="55"></div><br />
+                        <p>Score: <span class="rank">{{'%0.2f'| format(d.result.score|float)}}</span>
+                    </div>
+                    <div class="result-right">
+                        <p class="result-name">{{ d.result.name }}</p><br>
+                        <p class="result-topics">topics: {{ d.result.reliability }}</p><br>
+                    </div>
                 </div>
                 <div id="{{ d.result.name }}" class="modal">
                     <!-- Modal content -->

@@ -97,9 +97,14 @@ h5 {
 
 .result {
     display: inline-block;
-    height: 100px;
-    margin: 10px;
+    height: 110px;
+    margin: 5px;
+    padding: 10px 10px;
     text-align: left;
+}
+
+.result:hover {
+    background-color: #efefef;
 }
 
 .result-left {
@@ -132,6 +137,10 @@ h5 {
     line-height: 1.5em;
     margin-top: 4px;
     margin-bottom: 4px;
+}
+
+p {
+    font-weight: 300;
 }
 
 p a {
@@ -265,19 +274,6 @@ button:focus {
 
 #search-bar {
     margin-top: 125px;
-}
-
-.row {
-    width: 66%;
-}
-
-.col {
-    width: 33%;
-}
-
-.col-labels {
-    font-weight: bold;
-    font-size: 16px;
 }
 
 #output {
