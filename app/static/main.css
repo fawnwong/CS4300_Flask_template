@@ -362,3 +362,7 @@ button:focus {
 .result-learn:hover:before {
     right: 0;
 }
+
+.left-align {
+    width: 100%;
+}
