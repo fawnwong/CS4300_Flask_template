@@ -34,7 +34,7 @@ def top_n_cos(n,query_string, tfidf):
 	q_vec = tfidf.transform([query_string]).toarray()
 	cosines = np.array([np.dot(q_vec, d) for d in doc_by_vocab]).T[0]
 	args = np.argsort(cosines)[::-1][:n]
-	return [(index_to_botname[x], bot_data[index_to_botname[x]]) for x in args]
+	return [(index_to_botname[x], cosines[x]) for x in args]
 
 def edit_distance(query_str, msg_str):
 	return Levenshtein.distance(query_str.lower(), msg_str.lower())
@@ -100,11 +100,12 @@ def bot_to_list(query, query_type):
 	if query_type == "name":
 		edit_dist = similar_names(query, bot_names)
 		data = []
-		for i in len(edit_dist):
+		for i in range(len(edit_dist)):
 			entry_dict = {}
 			entry_dict["rank"] = str(i+1)
 			res_dict = {}
 			res_dict["name"] = edit_dist[i][1]
+			res_dict["score"] = edit_dist[i][0]
 			res_dict["comment"] = "---"
 			res_dict["link"] = "http://reddit.com/u/"+ edit_dist[i][1]
 			res_dict["category"] = "bot_name"
@@ -113,13 +114,14 @@ def bot_to_list(query, query_type):
 	elif query_type == "bot-com":
 		cos_sim = top_n_cos(5,query, tfidf_vec)
 		data = []
-		for i in len(cos_sim):
+		for i in range(len(cos_sim)):
 			entry_dict = {}
 			entry_dict["rank"] = str(i+1)
 			res_dict = {}
 			res_dict["name"] = cos_sim[i][0]
+			res_dict["score"] = cos_sim[i][1]
 			res_dict["comment"] = "---"
-			res_dict["link"] = "http://reddit.com/u/"+ edit_dist[i][0]
+			res_dict["link"] = "http://reddit.com/u/"+ cos_sim[i][0]
 			res_dict["category"] = "bot_name"
 			entry_dict["result"] = res_dict
 			data.append(entry_dict)
@@ -143,16 +145,17 @@ def bot_to_list(query, query_type):
 			myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
 
 		data = []
-		for i in len(myresults):
+		for i in range(len(myresults)):
 			entry_dict = {}
 			entry_dict["rank"] = str(i+1)
 			res_dict = {}
 			res_dict["name"] = myresults[i][0]
+			res_dict["score"] = myresults[i][1]
 			res_dict["comment"] = "---"
 			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]
 			res_dict["category"] = "bot_name"
 			entry_dict["result"] = res_dict
-			data.append(entry_dict)
+			data.append(entry_dict)	
 
 	return data
 
