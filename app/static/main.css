@@ -363,6 +363,7 @@ button:focus {
     padding: 15px;
     margin: 10px 0px;
     width: 100%;
+    overflow: auto;
 }
 
 .modal-topics {
