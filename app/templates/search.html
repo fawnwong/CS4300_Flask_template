@@ -68,10 +68,22 @@
                     </div>
                     <div class="result-right">
                         <p class="result-name">{{ d.result.name }}</p><br>
-                        <p class="result-topics">topics: {{ d.result.reliability }}</p><br>
+                        <p class="result-topics">
+                            {% if d.result.stuff|length != 0 %} 
+                            topics:
+                                {% for s in range(0,d.result.stuff|length) %}
+                                    {% if s == d.result.stuff|length - 1 %}
+                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}.
+                                    {% else %}
+                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
+                                    {% endif %}
+                                {% endfor %}</p><br>
+                            {% else %}
+                                <p>No relevant topics</p>
+                            {% endif %}
                     </div>
                 </div>
-                <div id="{{ d.result.name.replace('-','_') }}" class="modal">
+                <div id="{{ d.result.name.replace('-','_') }}" class="modal animatetop">
                     <!-- Modal content -->
                     <div class="modal-content">
                         <span class="close" onclick="closeModal({{ d.result.name.replace('-','_') }})">&times;</span>

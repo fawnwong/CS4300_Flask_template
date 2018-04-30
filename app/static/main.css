@@ -21,6 +21,16 @@
   animation-delay: .7s;
 }
 
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
 @media (min-width: 1200px) {
 .container {
     max-width: 970px;
@@ -320,6 +330,7 @@ button:focus {
 .modal {
     background-color: rgba(0,0,0,0.5);
     font-family: 'Work Sans', sans-serif;
+    font-weight: 300;
 }
 
 .modal-content {
@@ -334,6 +345,10 @@ button:focus {
     text-align: center;
 }
 
+.modal-body {
+    width: 100%;
+}
+
 .modal-footer {
     border-top: unset;
 }
@@ -346,10 +361,14 @@ button:focus {
     border: 1px solid #888888;
     border-radius: 3px;
     padding: 15px;
+    margin: 10px 0px;
+    width: 100%;
+    overflow: auto;
 }
 
-.modal-reliability {
-    font-size: 10px;
+.modal-topics {
+    width: 100%;
+    font-size: 12px;
     font-weight: 200;
     color: #aaaaaa;
     text-align: center;
@@ -418,6 +437,10 @@ button:focus {
     min-width: 350px;
     height: auto;
     margin: 10% auto; /* 15% from the top and centered */    
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
 }
 
 /* The Close Button */
