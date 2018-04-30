@@ -61,7 +61,6 @@ function extractContent(s, space) {
 function showModal(div) {
   var id = div.getAttribute('id');
   div.style.display = "block";
-
   var modal_content_div = document.getElementById(id).getElementsByClassName("modal-content")[0];
   var modal_body_div = modal_content_div.getElementsByClassName("modal-body")[0];
   var modal_comment_div = modal_body_div.getElementsByClassName("modal-comment")[0];
