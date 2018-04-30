@@ -19,50 +19,13 @@ def search():
 		# each dictionary d has a rank field and a list of results, e, of that rank for the three search categories
 		# for now make sure to define the list e in the order of bot name, bot comment, user comment searches
 		# each element in list e is a dictionary representing a result
-		# data = [
-		# 	{"rank": "1", 
-		# 	"list": [
-		# 		{"name": "A Bot 1", "comment": "A Comment 1", "link": "http://www.google.com", "category": "bot_name", "score": 1},
-		# 		{"name": "B Bot 1", "comment": "B Comment 1", "link": "http://www.google.com", "category": "bot_comments", "score": 0.234},
-		# 		{"name": "C Bot 1", "comment": "C Comment 1", "link": "http://www.google.com", "category": "user_comments", "score": 0.874}
-		# 	]},
-		# 	{"rank": "2",
-		# 	"list": [
-		# 		{"name": "A Bot 2", "comment": "A Comment 2", "link": "http://www.google.com", "category": "bot_name", "score": 0.436},
-		# 		{"name": "B Bot 2", "comment": "B Comment 2", "link": "http://www.google.com", "category": "bot_comments", "score": 0.123},
-		# 		{"name": "C Bot 2", "comment": "C Comment 2", "link": "http://www.google.com", "category": "user_comments", "score": 0.254}
-		# 	]},
-		# 	{"rank": "3", 
-		# 	"list": [
-		# 		{"name": "A Bot 3", "comment": "A Comment 3", "link": "http://www.google.com", "category": "bot_name", "score": 0.921},
-		# 		{"name": "B Bot 3", "comment": "B Comment 3", "link": "http://www.google.com", "category": "bot_comments", "score": 0.452},
-		# 		{"name": "C Bot 3", "comment": "C Comment 3", "link": "http://www.google.com", "category": "user_comments", "score": 0.109}
-		# 	]},
-		# 	{"rank": "4", 
-		# 	"list": [
-		# 		{"name": "A Bot 4", "comment": "A Comment 4", "link": "http://www.google.com", "category": "bot_name", "score": 0.872},
-		# 		{"name": "B Bot 4", "comment": "B Comment 4", "link": "http://www.google.com", "category": "bot_comments", "score": 0.154},
-		# 		{"name": "C Bot 4", "comment": "C Comment 4", "link": "http://www.google.com", "category": "user_comments", "score": 0.209}
-		# 	]},
-		# 	{"rank": "5", 
-		# 	"list": [
-		# 		{"name": "A Bot 5", "comment": "A Comment 5", "link": "http://www.google.com", "category": "bot_name", "score": 0.652},
-		# 		{"name": "B Bot 5", "comment": "B Comment 5", "link": "http://www.google.com", "category": "bot_comments", "score": 0.591},
-		# 		{"name": "C Bot 5", "comment": "C Comment 5", "link": "http://www.google.com", "category": "user_comments", "score": 0.194}
-		# 	]},
-		# ]
-
 
 		#replace no category with a category variable
 		# lexicon.create_category("funny",["funny","lol","hilarious", "haha", "joke"])
-		# lexicon.create_category("silly",["silly","ridiculous","childish"])
-		# lexicon.create_category("silly",["silly","ridiculous","childish"])
 		# lexicon.create_category("stupid",["stupid", "dumb","pointless", "wrong"])
-		# lexicon.create_category("good", ["good", "great", "perfect", "wonderful", "fantastic"]) 
 		# lexicon.create_category("bad",["bad", "wrong", "waste", "inaccurate", "stupid", "disagree", "sad"])
 		# lexicon.create_category("useful", ["good", "function", "effective", "interesting"])
 		# lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"])
-		# lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
 		# lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
 		# lexicon.create_category("shocking", ["shocked", "wtf", "shit", "jesus", "christ", "yikes"])
 		data = bot_to_list(query, query_type, "no category")
