@@ -27,3 +27,28 @@ $(document).ready(function () {
 function learnHandler(element) {
   console.log("hi");
 }
+
+function extractContent(s, space) {
+  var span= document.createElement('span');
+  span.innerHTML= s;
+  if(space) {
+    var children= span.querySelectorAll('*');
+    for(var i = 0 ; i < children.length ; i++) {
+      if(children[i].textContent)
+        children[i].textContent+= ' ';
+      else
+        children[i].innerText+= ' ';
+    }
+  }
+  return [span.textContent || span.innerText].toString().replace(/ +/g,' ');
+};
+
+$('#exampleModalCenter').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var botname = button.data('botname') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-title').text('{{ '+ botname +'.name }}')
+  modal.find('.modal-rank input').val(recipient)
+})
