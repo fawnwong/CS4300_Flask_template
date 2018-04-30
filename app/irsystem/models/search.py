@@ -236,6 +236,7 @@ def bot_to_list(query, query_type, category):
 				break
 		'''
 		query_sentiment = lexicon.analyze(query, normalize=True)
+
 		query_topics = queryAnalysis(query, query_sentiment)
 
 
@@ -254,12 +255,13 @@ def bot_to_list(query, query_type, category):
 
 		# else: 
 		# 	print("no relevant categories found")
+		myresults = []
+		if(len(query_topics.items())> 0):
+			myresults, stuff = commentAnalysis(query_topics)
 
-		myresults, stuff = commentAnalysis(query_topics)
-
-		if not myresults:
-			myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
-			stuff = {}
+		#if not myresults:
+			#myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
+			#stuff = {}
 
 		data = []
 		for i in range(len(myresults)):
