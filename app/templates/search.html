@@ -46,7 +46,7 @@
             <h2 id="output">{{output_message}}</h2> <br>
             {% for d in data %}   
             <!-- add scores, highlight comments --> 
-                <div class="result" onclick="showModal({{ d.result.name }})">
+                <div class="result" onclick="showModal({{ d.result.name.replace('-','_') }})">
                     <div class="result-left">
                         <div id="icon"><img src="/static/icon.png" alt="beepboop" width="55"></div><br />
                         <p>Score: <span class="rank">{{'%0.2f'| format(d.result.score|float)}}</span>
@@ -56,10 +56,10 @@
                         <p class="result-topics">topics: {{ d.result.reliability }}</p><br>
                     </div>
                 </div>
-                <div id="{{ d.result.name }}" class="modal">
+                <div id="{{ d.result.name.replace('-','_') }}" class="modal">
                     <!-- Modal content -->
                     <div class="modal-content">
-                        <span class="close" onclick="closeModal({{ d.result.name }})">&times;</span>
+                        <span class="close" onclick="closeModal({{ d.result.name.replace('-','_') }})">&times;</span>
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">{{ d.result.name }}</h5><br>
                             <p>Score: <span class="rank">{{ d.result.score }}</span></p><br>
