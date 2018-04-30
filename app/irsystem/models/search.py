@@ -195,7 +195,7 @@ def bot_to_list(query, query_type, category):
 			res_dict["karma"] = karma
 			res_dict["reliability"] = 100/(1.1**score)
 			res_dict["comment"] = comment
-			res_dict["score"] = edit_dist[i][0]
+			res_dict["score"] = 100/(1.1**(edit_dist[i][0]))
 			res_dict["link"] = "http://reddit.com/u/"+ edit_dist[i][1]
 			res_dict["category"] = "bot_name"
 			entry_dict["result"] = res_dict
