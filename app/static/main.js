@@ -4,6 +4,9 @@ $(document).ready(function () {
     $('html, body').animate({
       scrollTop: $('#output').offset().top
     }, {duration: 600, easing: 'swing'});
+    var str = window.location.href.substring(window.location.href.lastIndexOf("=")+1,window.location.href.lastIndexOf("&"));
+    var type = window.location.href.substring(window.location.href.lastIndexOf("=")+1,window.location.href.length);
+    console.log(str + "," + type);
   }
 });
 
