@@ -34,7 +34,7 @@
                                 <option value="user-com">User Comments</option>
                             </select>
                         </div>
-                        <label class="sort-bar" id="sort-label">SEARCH BY</label>
+                        <label class="sort-bar" id="sort-label">Search By</label>
                     </div> <br> <br>
                     <div class="left-align">
                         <div class="select-style sort-bar">
@@ -49,7 +49,7 @@
                                 <option value="shocking">Shocking</option>
                             </select>
                         </div>
-                        <label class="sort-bar" id="sort-label">FILTER BY</label>
+                        <label class="sort-bar" id="sort-label">Filter By</label>
                     </div> <br>
                     <button type="submit" id="input-btn"> Let's Go! </button>
                 </div>
@@ -81,7 +81,7 @@
                                     {% endif %}
                                 {% endfor %}</p><br>
                             {% else %}
-                                <p>No relevant topics</p>
+                                <p>topics: none :(</p>
                             {% endif %}
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                             <p><span class="rank">{{ d.result.karma }}</span> Reddit karma</p><br>
                         </div><br>
                         <div class="modal-body">
-                            <h6>EXAMPLE COMMENT</h6><br>
+                            <h6>Example Comment</h6><br>
                             <div class="modal-comment">
                                 {{ d.result.comment }}
                             </div><br>
