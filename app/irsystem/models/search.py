@@ -14,7 +14,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_
 bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
 
 # result_dict = cPickle.load( open(os.path.join(APP_ROOT, '../data/user_results.p'), "rb" ) )
-with open(os.path.join(APP_ROOT, '../data/user_sentiment.json')) as myfile:
+with open(os.path.join(APP_ROOT, '../data/new_comment_results.json')) as myfile:
 	user_sentiment = json.loads(myfile.read())
 
 bot_names = bot_data.keys()
@@ -50,52 +50,129 @@ def similar_names(query, msgs):
 
 lexicon = Empath()
 lexicon.create_category("funny",["funny","lol","hilarious", "haha", "joke"])
-#lexicon.create_category("silly",["silly","dumb","ridiculous", "stupid", "childish", "fun"])
-lexicon.create_category("stupid",["stupid","dumb","pointless", "why", "wrong"])
-lexicon.create_category("good", ["good", "great", "wonderful", "fantastic", "useful", "appreciated"])
-lexicon.create_category("bad",["bad", "wrong", "inaccurate", "stupid", "disagree"])
-lexicon.create_category("useful", ["good", "function", "effective", "interesting", "learn"])
+lexicon.create_category("silly",["silly","ridiculous","childish"])
+lexicon.create_category("silly",["silly","ridiculous","childish"])
+lexicon.create_category("stupid",["stupid", "dumb","pointless", "wrong"])
+lexicon.create_category("good", ["good", "great", "perfect", "wonderful", "fantastic"]) 
+lexicon.create_category("bad",["bad", "wrong", "waste", "inaccurate", "stupid", "disagree", "sad"])
+lexicon.create_category("useful", ["good", "function", "effective", "interesting"])
 lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"])
-#lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
-lexicon.create_category("moderating", ["moderating", "mod", "moderate", "rules", "comment", "removed"])
+lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
 lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
+lexicon.create_category("shocking", ["shocked", "wtf", "shit", "jesus", "christ", "yikes"])
 
-def queryAnalysis(input_query):
-	# initialize with our own categories
-	# get empath categories from query
-	query_sentiment = lexicon.analyze(input_query.lower(), normalize=True)
-	relevant_query_topics = {k: v for k, v in query_sentiment.items() if v > 0}
-	return relevant_query_topics
+# def queryAnalysis(input_query):
+# 	# initialize with our own categories
+# 	# get empath categories from query
+# 	query_sentiment = lexicon.analyze(input_query.lower(), normalize=True)
+# 	relevant_query_topics = {k: v for k, v in query_sentiment.items() if v > 0}
+# 	return relevant_query_topics
+def queryAnalysis(query, query_sentiment):
+	identical_cat_weight = 2.0
+	generic_boost = 1.0
 
-def commentAnalysis(query_topics, json_file):
+	query_topics = {k: v for k, v in query_sentiment.items() if v > 0}
 
-	# get empath results from pickle file
-	# 	with open(pickle_file, 'rb') as fp:
-	# 	    user_sentiment = cpickle.load(fp)
-	
-	# cPickle.load( open(os.path.join(APP_ROOT, ('../data/' + pickle_file)), "rb" ) )
-	
-	# use json instead:
+	# to be returned
+	cat_weights = {k: (v+generic_boost) for k, v in query_sentiment.items() if v > 0}
+
+	# go through each word to check if topic 
+	for word in query.split():
+		if word in query_sentiment.keys():
+			cat_weights[word] = cat_weights.get(word, 0.) + identical_cat_weight
+
+
+	if 'bot' in cat_weights.keys():
+		del cat_weights['bot']
+
+	return cat_weights
+def commentAnalysis(query_topics):
+
 
 	# if we get categories from query, show results; otherwise show error
 	if len(query_topics.items()) > 0:
+		top_results = {}
+		top_results['results'] = []
 
-		# find top 10 results for each query topic
-		top_results = []
-		for topic, key in query_topics.items():
-			top_results += user_sentiment[topic]
-
-		# sort again if we combined multiple categories 
-		if len(query_topics.items()) > 1:
-			re_sorted_by_score = sorted(top_results, key=lambda tup: tup[1])
-			return list(reversed(re_sorted_by_score))
 		
-		# if one category, it's already been sorted in preprocessing
-		return top_results
+		for topic, score in query_topics.items():
+			# pull top 10 results for that topic; multiply score by query weight 
+			weighted_topic_ranking =  [ (b, s * score, x, y) for (b, s, x, y) in user_sentiment[topic][-10:] ]
 
+			# add to unordered list of top rankings
+			top_results['results'] += weighted_topic_ranking
+
+			# store ranking for this specific score
+			top_results[topic] = weighted_topic_ranking
+
+
+		
+		# check if multiple categories/topics
+		if len(query_topics.items()) > 1:
+
+			# remake results and add together any duplicates
+			totals = {}
+			#print(top_results['results'])
+			for name, v, x, y in top_results['results']:
+				totals[name] = totals.get(name, (0., 0, 0.))
+				totals[name] = (totals[name][0] + v, totals[name][1] + x, totals[name][2] + y)
+
+
+			totals_list = map(list, totals.items())
+
+			# sort again since we combined multiple categories 
+			re_sorted_by_score = sorted(totals_list, key=lambda tup: tup[1])
+			top_results['results'] = list(reversed(re_sorted_by_score[-5:]))
+
+
+		bot_stuff = {}
+		for cat, catlist in top_results.items():
+			if cat != 'results':
+				for bot, score, y, z in catlist:
+					placeholder = bot_stuff.get(bot, [])
+					bot_stuff[bot] =  placeholder + [(cat, score)]
+
+
+		for bot in bot_stuff.keys():
+			thing = list(reversed(sorted(bot_stuff[bot], key=lambda tup: tup[1])))
+			bot_stuff[bot] = thing
+
+
+		
+		# if one topic, it's already been sorted in preprocessing
+		return top_results['results']#, bot_stuff
 	else: 
-		# no relevant categories found 
-		return []
+		print("no relevant categories found")
+		return {}
+# def commentAnalysis(query_topics, json_file):
+
+# 	# get empath results from pickle file
+# 	# 	with open(pickle_file, 'rb') as fp:
+# 	# 	    user_sentiment = cpickle.load(fp)
+	
+# 	# cPickle.load( open(os.path.join(APP_ROOT, ('../data/' + pickle_file)), "rb" ) )
+	
+# 	# use json instead:
+
+# 	# if we get categories from query, show results; otherwise show error
+# 	if len(query_topics.items()) > 0:
+
+# 		# find top 10 results for each query topic
+# 		top_results = []
+# 		for topic, key in query_topics.items():
+# 			top_results += user_sentiment[topic]
+
+# 		# sort again if we combined multiple categories 
+# 		if len(query_topics.items()) > 1:
+# 			re_sorted_by_score = sorted(top_results, key=lambda tup: tup[1])
+# 			return list(reversed(re_sorted_by_score))
+		
+# 		# if one category, it's already been sorted in preprocessing
+# 		return top_results
+
+# 	else: 
+# 		# no relevant categories found 
+# 		return []
 
 def bot_to_list(query, query_type):
 	if query == None:
@@ -146,9 +223,27 @@ def bot_to_list(query, query_type):
 			if myresults:
 				break
 		'''
-		
-		query_topics = queryAnalysis(query)
-		myresults = commentAnalysis(query_topics, 'user_sentiment.json')
+		query_sentiment = lexicon.analyze(query, normalize=True)
+		query_topics = queryAnalysis(query, query_sentiment)
+
+
+		# if len(cat_weights) > 0:
+		# 	output, bot_stuff = userCommentAnalysisBreakdown(cat_weights, 'user_comment_results_v1.json') #'user_sentiment.json')
+
+		# 	if len(output) > 0:
+
+
+
+		# 		print('\nRESULTS: ')
+		# 		for thing in output:
+		# 			print('\n')
+		# 			print(thing)
+		# 			print(bot_stuff[thing[0]])
+
+		# else: 
+		# 	print("no relevant categories found")
+
+		myresults = commentAnalysis(query_topics)
 
 		if not myresults:
 			myresults = [("no category",0) , ("no category",0) , ("no category",0) , ("no category",0) , ("no category", 0)]
