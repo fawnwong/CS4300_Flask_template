@@ -1,9 +1,7 @@
 $(document).ready(function () {
   if(window.location.href.indexOf("search") > -1) {
     // window.location.href = (String(window.location.href) + "#results");
-    $('html, body').animate({
-      scrollTop: $('#output').offset().top
-    }, {duration: 600, easing: 'swing'});
+
     var filter = window.location.href.substring(window.location.href.lastIndexOf("=")+1,window.location.href.length);
     var preprocess_1 = window.location.href.substring(0,window.location.href.lastIndexOf("="));
     var type = preprocess_1.substring(preprocess_1.lastIndexOf("=")+1,preprocess_1.lastIndexOf("&"));
@@ -12,6 +10,10 @@ $(document).ready(function () {
     document.getElementById("input").value = input;
     document.getElementById("search-select").value = type;
     document.getElementById("search-filter").value = filter;
+
+    $('html, body').animate({
+      scrollTop: $('#output').offset().top
+    }, {duration: 600, easing: 'swing'});
   }
 });
 

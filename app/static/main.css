@@ -101,6 +101,11 @@ h5 {
     font-size: 20px;
 }
 
+h6 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
 .title {
     color: #d82652;
 }
@@ -283,7 +288,7 @@ button:focus {
 }
 
 #search-bar {
-    margin-top: 125px;
+    margin-top: 65px;
 }
 
 #output {
@@ -291,13 +296,15 @@ button:focus {
 }
 
 .sort-bar {
+    font-size: 14px;
+    text-transform: uppercase;
     float: right;
 }
 
 #sort-label {
     margin-right: 8px;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 14px;
     padding: 5px;
 }
 

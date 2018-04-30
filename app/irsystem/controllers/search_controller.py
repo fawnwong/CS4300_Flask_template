@@ -15,7 +15,7 @@ def search():
 		query_filter = "no category"
 	if query == None:
 		data = []
-		output_message = ''
+		output_message = 'No results found.'
 	else:
 		output_message = "Search results: "
 		# data should be a list of dictionaries d for now, in decreasing order of importance
