@@ -11,7 +11,7 @@ def search():
 	query = request.args.get('search')
 	query_type = request.args.get('search-type')
 	query_filter = request.args.get('search-filter')
-	if query_filter == "None":
+	if query_filter == "none":
 		query_filter = "no category"
 	if query == None:
 		data = []
