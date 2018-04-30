@@ -50,14 +50,13 @@ def similar_names(query, msgs):
 
 lexicon = Empath()
 lexicon.create_category("funny",["funny","lol","hilarious", "haha", "joke"])
-lexicon.create_category("silly",["silly","ridiculous","childish"])
-lexicon.create_category("silly",["silly","ridiculous","childish"])
+# lexicon.create_category("silly",["silly","ridiculous","childish"])
 lexicon.create_category("stupid",["stupid", "dumb","pointless", "wrong"])
-lexicon.create_category("good", ["good", "great", "perfect", "wonderful", "fantastic"]) 
+# lexicon.create_category("good", ["good", "great", "perfect", "wonderful", "fantastic"]) 
 lexicon.create_category("bad",["bad", "wrong", "waste", "inaccurate", "stupid", "disagree", "sad"])
 lexicon.create_category("useful", ["good", "function", "effective", "interesting"])
 lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"])
-lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
+# lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
 lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
 lexicon.create_category("shocking", ["shocked", "wtf", "shit", "jesus", "christ", "yikes"])
 
