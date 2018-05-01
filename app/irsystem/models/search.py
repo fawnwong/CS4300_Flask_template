@@ -33,7 +33,7 @@ doc_by_vocab = tfidf_vec.transform([bot_data[d] for d in bot_data.keys()]).toarr
 
 bot_info = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_info.p'), "rb" ) )
 
-with open(os.path.join(APP_ROOT, '../data/bot_data_updated.json')) as myfile:
+with open(os.path.join(APP_ROOT, '../data/bot_data_complete_but_disorganized.json')) as myfile:
 	bot_sent = json.loads(myfile.read())
 
 def top_n_cos(query_string, tfidf):
