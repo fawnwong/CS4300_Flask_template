@@ -15,7 +15,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_
 bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
 
 # result_dict = cPickle.load( open(os.path.join(APP_ROOT, '../data/user_results.p'), "rb" ) )
-with open(os.path.join(APP_ROOT, '../data/new_comment_results.json')) as myfile:
+with open(os.path.join(APP_ROOT, '../data/topic_to_bots.json')) as myfile:
 	user_sentiment = json.loads(myfile.read())
 
 bot_names = bot_data.keys()
@@ -33,7 +33,7 @@ doc_by_vocab = tfidf_vec.transform([bot_data[d] for d in bot_data.keys()]).toarr
 
 bot_info = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_info.p'), "rb" ) )
 
-with open(os.path.join(APP_ROOT, '../data/bot_data_complete_but_disorganized.json')) as myfile:
+with open(os.path.join(APP_ROOT, '../data/bot_to_topics_updated.json')) as myfile:
 	bot_sent = json.loads(myfile.read())
 
 def top_n_cos(query_string, tfidf):
