@@ -8,6 +8,7 @@ import csv
 import re
 import cPickle
 import urllib
+#from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_top
 
@@ -69,11 +70,43 @@ lexicon.create_category("shocking", ["shocked", "wtf", "shit", "jesus", "christ"
 def queryAnalysis(query, query_sentiment):
 	identical_cat_weight = 2.0
 	generic_boost = 1.0
+	threshold = 0.7
+	positives = ['funny', 'contentment', 'party', 'wealthy', 'divine', 'valuable', \
+	'silly', 'useful', 'pride', 'surprise', 'help', 'cheerfulness', 'affection', 'love', \
+	'friends', 'gain', 'play', 'anticipation', 'heroic', 'sympathy', 'appreciated', 'emotional', \
+	'fun', 'beauty', 'worship', 'strength', 'warmth', 'trust', 'attractive', 'interesting', \
+	'optimism', 'giving', 'good', 'joy']
+	negatives = ['kill', 'pain', 'ugliness', 'confusion', 'nervousness', 'sadness', 'aggression', \
+	'stupid', 'bad', 'anger', 'war', 'envy', 'deception', 'fear', 'childish', 'dispute', 'fight', \
+	'neglect', 'fire', 'irritability', 'shame', 'injury', 'prison', 'crime', 'disgust', 'rage', 'hate', \
+	'terrorism', 'weakness', 'violence', 'death', 'ridicule', 'stealing', 'weapon', 'disappointment', \
+	'poor', 'suffering', 'horror', 'timidity']
 
-	query_topics = {k: v for k, v in query_sentiment.items() if v > 0}
+	# set up vader
+	#analyzer = SentimentIntensityAnalyzer()
+	#sent_analysis = analyzer.polarity_scores(query)
+
+	pos = 0
+	neg = 0
+	for word in query.split():
+		if word in positives:
+			pos += 1
+		if word in negatives:
+			neg += 1
+
+	#query_topics = {k: v for k, v in query_sentiment.items() if v > 0}
 
 	# to be returned
 	cat_weights = {k: (v+generic_boost) for k, v in query_sentiment.items() if v > 0}
+
+	# if positive query, remove negative categorys
+	if pos > neg :
+		cat_weights = {k: v for k, v in cat_weights.items() if k not in negatives}
+
+	if neg > pos:	
+		cat_weights = {k: v for k, v in cat_weights.items() if k not in positives}	 
+
+	
 
 	# go through each word to check if topic 
 	for word in query.split():
@@ -273,7 +306,6 @@ def bot_to_list(query, query_type, category):
 			res_dict["karma"] = karma
 			res_dict["reliability"] = score
 			res_dict["comment"] = comment
-			print(myresults[i])
 			res_dict["score"] = myresults[i][1][0]
 			res_dict["stuff"] = stuff[myresults[i][0]]
 			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]
