@@ -15,7 +15,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_
 bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
 
 # result_dict = cPickle.load( open(os.path.join(APP_ROOT, '../data/user_results.p'), "rb" ) )
-with open(os.path.join(APP_ROOT, '../data/topic_to_bots.json')) as myfile:
+with open(os.path.join(APP_ROOT, '../data/topics_to_bots.json')) as myfile:
 	user_sentiment = json.loads(myfile.read())
 
 bot_names = bot_data.keys()
