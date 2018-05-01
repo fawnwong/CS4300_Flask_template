@@ -18,11 +18,9 @@
             <br />
             <div id="desc">
                 This application is for finding Reddit bots — whether you want to find a bot with a specific functionality or just explore Reddit, we're here for you!
-                 You can search in three ways. Searching by categories will find bots most relevant to the category you input. Searching by comments will find the most similar bots based on their own comments.
-                Searching by name will find bots with names most similar to your query.
+                 You can search in three ways. Searching by name will find bots with names most similar to your query. Searching by categories will find bots most relevant to the category you input. Searching by comments will find the most similar bots based on their own comments.
             </div>
             <br />
-            
             <div class="search">
                 <div id="botgraphic">
                     <img src="/static/bot.gif" alt="happybot" height="400"/>
@@ -34,9 +32,9 @@
                     <div class="left-align">
                         <div class="select-style sort-bar">
                             <select id="search-select" name="search-type">
+                                <option value="name">Names</option>
                                 <option value="user-com">Categories</option>
                                 <option value="bot-com">Comments</option>
-                                <option value="name">Names</option>
                             </select>
                         </div>
                         <label class="sort-bar" id="sort-label">
