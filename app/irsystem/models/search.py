@@ -33,6 +33,8 @@ doc_by_vocab = tfidf_vec.transform([bot_data[d] for d in bot_data.keys()]).toarr
 
 bot_info = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_info.p'), "rb" ) )
 
+with open(os.path.join(APP_ROOT, '../data/bot_data.json')) as myfile:
+	bot_sent = json.loads(myfile.read())
 
 def top_n_cos(query_string, tfidf):
 	q_vec = tfidf.transform([query_string]).toarray()
@@ -232,7 +234,13 @@ def bot_to_list(query, query_type, category):
 			res_dict["comment"] = comment
 			res_dict["score"] = 100/(1.1**(edit_dist[i][0]))
 			res_dict["link"] = "http://reddit.com/u/"+ edit_dist[i][1]
-			res_dict["category"] = "bot_name"
+			res_dict["category"] = "bot_name"			
+			try:
+				res_dict["topics"] = bot_sent[res_dict["name"]]["topics"]
+				res_dict["sent"] = bot_sent[res_dict["name"]]["sentiment"]
+			except:
+				res_dict["topics"] = []
+				res_dict["sent"] = 0
 			entry_dict["result"] = res_dict
 			if category == "no category":
 				data.append(entry_dict)
@@ -253,6 +261,12 @@ def bot_to_list(query, query_type, category):
 			res_dict["score"] = cos_sim[i][1] * 100
 			res_dict["link"] = "http://reddit.com/u/"+ cos_sim[i][0]
 			res_dict["category"] = "bot_comments"
+			try:
+				res_dict["topics"] = bot_sent[res_dict["name"]]["topics"]
+				res_dict["sent"] = bot_sent[res_dict["name"]]["sentiment"]
+			except:
+				res_dict["topics"] = []
+				res_dict["sent"] = 0
 			entry_dict["result"] = res_dict
 			if category == "no category":
 				data.append(entry_dict)
@@ -312,6 +326,12 @@ def bot_to_list(query, query_type, category):
 			res_dict["stuff"] = stuff[myresults[i][0]]
 			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]
 			res_dict["category"] = "user_comments"
+			try:
+				res_dict["topics"] = bot_sent[res_dict["name"]]["topics"]
+				res_dict["sent"] = bot_sent[res_dict["name"]]["sentiment"]
+			except:
+				res_dict["topics"] = []
+				res_dict["sent"] = 0
 			entry_dict["result"] = res_dict
 			if category == "no category":
 				data.append(entry_dict)	
