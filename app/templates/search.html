@@ -94,7 +94,17 @@
                                     {% endif %}
                                 {% endfor %}</p><br>
                             {% else %}
-                                <p>relevant topics: none :(</p>
+                            relevant topics:
+                                {% for s in range(0, d.result.topics|length) %}
+                                    {% if s == 3 %}
+                                        {{ d.result.topics|length - 3 }} more
+                                    {% elif s > 3 %}
+                                    {% elif s == d.result.topics|length - 1 %}
+                                        {{d.result.topics[s][0]}} &middot {{'%0.2f'| format(d.result.topics[s][1]|float)}}
+                                    {% else %}
+                                        {{d.result.topics[s][0]}} &middot {{'%0.2f'| format(d.result.topics[s][1]|float)}},
+                                    {% endif %}
+                                {% endfor %}</p><br>
                             {% endif %}
                     </div>
                 </div>
@@ -121,6 +131,17 @@
                                         {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}
                                     {% else %}
                                         {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
+                                    {% endif %}
+                                {% endfor %}   
+                            </div>
+                            {% else %}
+                            <div class="modal-topics">
+                                Relevant topics:
+                                {% for s in range(0,d.result.topics|length) %}
+                                    {% if s == d.result.topics|length - 1 %}
+                                        {{d.result.topics[s][0]}} &middot {{'%0.2f'| format(d.result.topics[s][1]|float)}}
+                                    {% else %}
+                                        {{d.result.topics[s][0]}} &middot {{'%0.2f'| format(d.result.topics[s][1]|float)}},
                                     {% endif %}
                                 {% endfor %}   
                             </div>
