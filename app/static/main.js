@@ -6,33 +6,18 @@ $(document).ready(function () {
     var preprocess_1 = window.location.href.substring(0,window.location.href.lastIndexOf("="));
     var type = preprocess_1.substring(preprocess_1.lastIndexOf("=")+1,preprocess_1.lastIndexOf("&"));
     var preprocess_2 = preprocess_1.substring(0,preprocess_1.lastIndexOf("="));
-    var input = preprocess_2.substring(preprocess_2.lastIndexOf("=")+1,preprocess_2.lastIndexOf("&"));        
+    var input = preprocess_2.substring(preprocess_2.lastIndexOf("=")+1,preprocess_2.lastIndexOf("&")).replace("+"," ");        
     document.getElementById("input").value = input;
     document.getElementById("search-select").value = type;
     document.getElementById("search-filter").value = filter;
-
     $('html, body').animate({
       scrollTop: $('#output').offset().top
     }, {duration: 600, easing: 'swing'});
+  } else {
+    document.getElementById("output").innerHTML = "";
   }
+  $('[data-toggle="tooltip"]').tooltip(); 
 });
-
-// function selectHandler() {
-//   var selected = document.getElementById("search-select").value;
-//   if (selected == "bot-com") {  
-//     $(".by-bot-name").addClass("inactive");
-//     $(".by-user-com").addClass("inactive");
-//     $(".by-bot-com").removeClass("inactive");
-//   } else if (selected == "user-com") {
-//     $(".by-bot-name").addClass("inactive");
-//     $(".by-user-com").removeClass("inactive");
-//     $(".by-bot-com").addClass("inactive");
-//   } else {
-//     $(".by-bot-name").removeClass("inactive");
-//     $(".by-user-com").addClass("inactive");
-//     $(".by-bot-com").addClass("inactive"); 
-//   }
-// }
 
 function learnHandler(element) {
   console.log("hi");

@@ -20,7 +20,7 @@
             
             <div class="search">
                 <div id="botgraphic">
-                    <img src="/static/bot.png" alt="happybot" height="342" width="254">
+                    <img src="/static/bot.png" alt="happybot" height="342" width="254"/>
                 </div>
                 <div id="search-bar">
                     <input id="input" type="text" name="search" class="form-input" value="" placeholder="Do you know what you want your bot to do?">
@@ -29,12 +29,14 @@
                     <div class="left-align">
                         <div class="select-style sort-bar">
                             <select id="search-select" name="search-type">
-                                <option value="name">Name</option>
-                                <option value="bot-com">Bot Comments</option>
-                                <option value="user-com">User Comments</option>
+                                <option value="user-com">Categories</option>
+                                <option value="bot-com">Comments</option>
+                                <option value="name">Names</option>
                             </select>
                         </div>
-                        <label class="sort-bar" id="sort-label">Search By</label>
+                        <label class="sort-bar" id="sort-label">
+                            Search By 
+                        </label>
                     </div> <br> <br>
                     <div class="left-align">
                         <div class="select-style sort-bar">
@@ -49,9 +51,15 @@
                                 <option value="shocking">Shocking</option>
                             </select>
                         </div>
-                        <label class="sort-bar" id="sort-label">Filter By</label>
+                        <label class="sort-bar" id="sort-label">
+                            Filter By
+                        </label>
                     </div> <br>
-                    <button type="submit" id="input-btn"> Let's Go! </button>
+                    <button type="submit" id="input-btn"> Let's Go! </button><br>
+                    <div id="desc">
+                        You can search in three ways! Searching by categories will find bots most relevant to the category you input. Searching by comments will find the most similar bots based on their own comments.
+                        Searching by name will find bots with names most similar to your query.
+                    </div>
                 </div>
             </div>
         </form>
@@ -59,27 +67,34 @@
         <form id="results" class="form-inline global-search fade-in">
         {% if data %}
             <h2 id="output">{{output_message}}</h2> <br>
+            {% set icons = ["/static/icon0.png", "/static/icon1.png", "/static/icon2.png", "/static/icon3.png"] %}
+            {% set counter = 0 %}
             {% for d in data %}   
+            {% if counter < 30 %}
             <!-- add scores, highlight comments --> 
                 <div class="result" onclick="showModal({{ d.result.name.replace('-','_') }})">
                     <div class="result-left">
-                        <div id="icon"><img src="/static/icon.png" alt="beepboop" width="55"></div><br />
+                        <!-- cycle through icons -->
+                        <div id="icon"><img src="{{ icons[counter % 4] }}" alt="beepboop" width="65no resut"></div><br />
                         <p>Score: <span class="rank">{{'%0.2f'| format(d.result.score|float)}}</span>
                     </div>
                     <div class="result-right">
                         <p class="result-name">{{ d.result.name }}</p><br>
                         <p class="result-topics">
                             {% if d.result.stuff|length != 0 %} 
-                            topics:
-                                {% for s in range(0,d.result.stuff|length) %}
-                                    {% if s == d.result.stuff|length - 1 %}
-                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}.
+                            relevant topics:
+                                {% for s in range(0, d.result.stuff|length) %}
+                                    {% if s == 3 %}
+                                        {{ d.result.stuff|length - 3 }} more
+                                    {% elif s > 3 %}
+                                    {% elif s == d.result.stuff|length - 1 %}
+                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}
                                     {% else %}
                                         {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
                                     {% endif %}
                                 {% endfor %}</p><br>
                             {% else %}
-                                <p>topics: none :(</p>
+                                <p>relevant topics: none :(</p>
                             {% endif %}
                     </div>
                 </div>
@@ -91,6 +106,16 @@
                             <h5 class="modal-title" id="exampleModalLongTitle">{{ d.result.name }}</h5><br>
                             <p>Score: <span class="rank">{{ d.result.score }}</span></p><br>
                             <p><span class="rank">{{ d.result.karma }}</span> Reddit karma</p><br>
+                            <div class="modal-topics">
+                                    Relevant topics:
+                                    {% for s in range(0,d.result.stuff|length) %}
+                                        {% if s == d.result.stuff|length - 1 %}
+                                            {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}
+                                        {% else %}
+                                            {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                         </div><br>
                         <div class="modal-body">
                             <h6>Example Comment</h6><br>
@@ -98,15 +123,8 @@
                                 {{ d.result.comment }}
                             </div><br>
                             {% if d.result.stuff %}
-                            <div class="modal-topics">
-                                Relevant topics:
-                                {% for s in range(0,d.result.stuff|length) %}
-                                    {% if s == d.result.stuff|length - 1 %}
-                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}.
-                                    {% else %}
-                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
-                                    {% endif %}
-                                {% endfor %}
+                            <div class="modal-reliability">
+                                We are {{ '%0.2f'| format(d.result.reliability*100|float)}}% sure this user is a bot.
                             </div>
                             {% endif %}
                         </div><br>
@@ -115,9 +133,11 @@
                         </div>
                     </div>
                 </div>
+            {% endif %}
+            {% set counter = counter + 1 %}
             {% endfor %}
         {% else %} 
-            <h2 id="output">No results found.</h2> <br>
+            <h2 id='output'>no results found.</h2> <br />
         {% endif %}
         </form>
     </body>
