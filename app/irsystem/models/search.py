@@ -37,6 +37,8 @@ bot_info = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_info.p'), "rb"
 def top_n_cos(query_string, tfidf):
 	q_vec = tfidf.transform([query_string]).toarray()
 	cosines = np.array([np.dot(q_vec, d) for d in doc_by_vocab]).T[0]
+	if (np.max(cosines) == 0):
+		return []
 	args = np.argsort(cosines)[::-1]
 	return [(index_to_botname[x], cosines[x]) for x in args]
 
