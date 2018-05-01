@@ -288,7 +288,7 @@ button:focus {
 }
 
 #search-bar {
-    margin-top: 65px;
+    margin-top: 25px;
 }
 
 #output {
@@ -471,4 +471,9 @@ button:focus {
 
 .modal-footer {
     float: right;
+}
+
+#desc {
+    width: 400px;
+    margin-top: 10px;
 }

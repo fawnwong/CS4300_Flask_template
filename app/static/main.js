@@ -16,6 +16,7 @@ $(document).ready(function () {
   } else {
     document.getElementById("output").innerHTML = "";
   }
+  $('[data-toggle="tooltip"]').tooltip(); 
 });
 
 function learnHandler(element) {

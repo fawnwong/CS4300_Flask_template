@@ -29,12 +29,14 @@
                     <div class="left-align">
                         <div class="select-style sort-bar">
                             <select id="search-select" name="search-type">
-                                <option value="user-com">User Comments</option>
-                                <option value="bot-com">Bot Comments</option>
-                                <option value="name">Name</option>
+                                <option value="user-com">Categories</option>
+                                <option value="bot-com">Comments</option>
+                                <option value="name">Names</option>
                             </select>
                         </div>
-                        <label class="sort-bar" id="sort-label">Search By</label>
+                        <label class="sort-bar" id="sort-label">
+                            Search By 
+                        </label>
                     </div> <br> <br>
                     <div class="left-align">
                         <div class="select-style sort-bar">
@@ -49,9 +51,15 @@
                                 <option value="shocking">Shocking</option>
                             </select>
                         </div>
-                        <label class="sort-bar" id="sort-label">Filter By</label>
+                        <label class="sort-bar" id="sort-label">
+                            Filter By
+                        </label>
                     </div> <br>
-                    <button type="submit" id="input-btn"> Let's Go! </button>
+                    <button type="submit" id="input-btn"> Let's Go! </button><br>
+                    <div id="desc">
+                        You can search in three ways! Searching by categories will find bots most relevant to the category you input. Searching by comments will find the most similar bots based on their own comments.
+                        Searching by name will find bots with names most similar to your query.
+                    </div>
                 </div>
             </div>
         </form>
