@@ -215,6 +215,8 @@ def bot_to_list(query, query_type, category):
 	if query == None:
 		return []	
 	query = query.lower().strip()
+	if query == "";
+		return []
 	if category != "no category":
 		category_list = user_sentiment[category]
 		category_names = []
