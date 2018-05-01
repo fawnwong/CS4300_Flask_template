@@ -64,6 +64,10 @@ lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"
 #lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
 lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
 lexicon.create_category("shocking", ["shocked", "wtf", "shit", "jesus", "christ", "yikes"])
+# NEW CATEGORIES:
+lexicon.create_category("english", ["english", "language", "grammar", "writing", "punctuation", "spelling", "spell", "misspell", "edit", "write"])
+lexicon.create_category("government", ["government", "politics", "political", "politician", "partisan", "democrat", "republican", "president", "congress"])
+lexicon.create_category("news", ["news", "newspaper", "article", "event", "current"])
 
 # def queryAnalysis(input_query):
 # 	# initialize with our own categories
