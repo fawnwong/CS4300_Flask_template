@@ -72,7 +72,7 @@
             {% for d in data %}   
             {% if counter < 30 %}
             <!-- add scores, highlight comments --> 
-                <div class="result" onclick="showModal({{ d.result.name.replace('-','_') }})">
+                <div class="result" onclick="showModal({{ ''.join(('m',d.result.name.replace('-','_'))) }})">
                     <div class="result-left">
                         <!-- cycle through icons -->
                         <div id="icon"><img src="{{ icons[counter % 8] }}" alt="beepboop" width="65"></div><br />
@@ -93,7 +93,7 @@
                                         {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
                                     {% endif %}
                                 {% endfor %}</p><br>
-                            {% else %}
+                            {% elif d.result.topics|length != 0 %}
                             relevant topics:
                                 {% for s in range(0, d.result.topics|length) %}
                                     {% if s == 3 %}
@@ -105,13 +105,15 @@
                                         {{d.result.topics[s][0]}} &middot {{'%0.2f'| format(d.result.topics[s][1]|float)}},
                                     {% endif %}
                                 {% endfor %}</p><br>
+                            {% else %}
+                            relevant topics: none :(
                             {% endif %}
                     </div>
                 </div>
-                <div id="{{ d.result.name.replace('-','_') }}" class="modal animatetop">
+                <div id="{{ ''.join(('m',d.result.name.replace('-','_'))) }}" class="modal animatetop">
                     <!-- Modal content -->
                     <div class="modal-content">
-                        <span class="close" onclick="closeModal({{ d.result.name.replace('-','_') }})">&times;</span>
+                        <span class="close" onclick="closeModal({{ ''.join(('m',d.result.name.replace('-','_'))) }})">&times;</span>
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">{{ d.result.name }}</h5><br>
                             <p>Score: <span class="rank">{{ '%0.2f'| format(d.result.score|float) }}</span></p><br>
@@ -134,7 +136,7 @@
                                     {% endif %}
                                 {% endfor %}   
                             </div>
-                            {% else %}
+                            {% elif d.result.topics|length != 0 %}
                             <div class="modal-topics">
                                 Relevant topics:
                                 {% for s in range(0,d.result.topics|length) %}
@@ -144,6 +146,10 @@
                                         {{d.result.topics[s][0]}} &middot {{'%0.2f'| format(d.result.topics[s][1]|float)}},
                                     {% endif %}
                                 {% endfor %}   
+                            </div>
+                            {% else %}
+                            <div class="modal-topics">
+                                Relevant topics: none :(
                             </div>
                             {% endif %}
                             <div class="modal-reliability">
