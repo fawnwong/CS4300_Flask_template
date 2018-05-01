@@ -193,7 +193,7 @@ def bot_to_list(query, query_type, category):
 			res_dict["name"] = edit_dist[i][1]
 			(karma, score, comment) = bot_info[res_dict["name"]]
 			res_dict["karma"] = karma
-			res_dict["reliability"] = 100/(1.1**score)
+			res_dict["reliability"] = 0.8 * score + .2
 			res_dict["comment"] = comment
 			res_dict["score"] = 100/(1.1**(edit_dist[i][0]))
 			res_dict["link"] = "http://reddit.com/u/"+ edit_dist[i][1]
@@ -213,7 +213,7 @@ def bot_to_list(query, query_type, category):
 			res_dict["name"] = cos_sim[i][0]
 			(karma, score, comment) = bot_info[res_dict["name"]]
 			res_dict["karma"] = karma
-			res_dict["reliability"] = score
+			res_dict["reliability"] = 0.8 * score + .2
 			res_dict["comment"] = comment
 			res_dict["score"] = cos_sim[i][1] * 100
 			res_dict["link"] = "http://reddit.com/u/"+ cos_sim[i][0]
@@ -271,9 +271,8 @@ def bot_to_list(query, query_type, category):
 			res_dict["name"] = myresults[i][0]
 			(karma, score, comment) = bot_info[res_dict["name"]]
 			res_dict["karma"] = karma
-			res_dict["reliability"] = score
+			res_dict["reliability"] = 0.8 * score + .2
 			res_dict["comment"] = comment
-			print(myresults[i])
 			res_dict["score"] = myresults[i][1][0]
 			res_dict["stuff"] = stuff[myresults[i][0]]
 			res_dict["link"] = "http://reddit.com/u/"+ myresults[i][0]

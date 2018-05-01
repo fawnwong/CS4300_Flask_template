@@ -67,29 +67,34 @@
         <form id="results" class="form-inline global-search fade-in">
         {% if data %}
             <h2 id="output">{{output_message}}</h2> <br>
+            {% set icons = ["/static/icon0.png", "/static/icon1.png", "/static/icon2.png", "/static/icon3.png"] %}
             {% set counter = 0 %}
             {% for d in data %}   
             {% if counter < 30 %}
             <!-- add scores, highlight comments --> 
                 <div class="result" onclick="showModal({{ d.result.name.replace('-','_') }})">
                     <div class="result-left">
-                        <div id="icon"><img src="/static/icon.png" alt="beepboop" width="55"></div><br/>
+                        <!-- cycle through icons -->
+                        <div id="icon"><img src="{{ icons[counter % 4] }}" alt="beepboop" width="65no resut"></div><br />
                         <p>Score: <span class="rank">{{'%0.2f'| format(d.result.score|float)}}</span>
                     </div>
                     <div class="result-right">
                         <p class="result-name">{{ d.result.name }}</p><br>
                         <p class="result-topics">
                             {% if d.result.stuff|length != 0 %} 
-                            topics:
-                                {% for s in range(0,d.result.stuff|length) %}
-                                    {% if s == d.result.stuff|length - 1 %}
-                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}.
+                            relevant topics:
+                                {% for s in range(0, d.result.stuff|length) %}
+                                    {% if s == 3 %}
+                                        {{ d.result.stuff|length - 3 }} more
+                                    {% elif s > 3 %}
+                                    {% elif s == d.result.stuff|length - 1 %}
+                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}
                                     {% else %}
                                         {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
                                     {% endif %}
                                 {% endfor %}</p><br>
                             {% else %}
-                                <p>topics: none :(</p>
+                                <p>relevant topics: none :(</p>
                             {% endif %}
                     </div>
                 </div>
@@ -101,6 +106,16 @@
                             <h5 class="modal-title" id="exampleModalLongTitle">{{ d.result.name }}</h5><br>
                             <p>Score: <span class="rank">{{ d.result.score }}</span></p><br>
                             <p><span class="rank">{{ d.result.karma }}</span> Reddit karma</p><br>
+                            <div class="modal-topics">
+                                    Relevant topics:
+                                    {% for s in range(0,d.result.stuff|length) %}
+                                        {% if s == d.result.stuff|length - 1 %}
+                                            {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}
+                                        {% else %}
+                                            {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                         </div><br>
                         <div class="modal-body">
                             <h6>Example Comment</h6><br>
@@ -108,15 +123,8 @@
                                 {{ d.result.comment }}
                             </div><br>
                             {% if d.result.stuff %}
-                            <div class="modal-topics">
-                                Relevant topics:
-                                {% for s in range(0,d.result.stuff|length) %}
-                                    {% if s == d.result.stuff|length - 1 %}
-                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}.
-                                    {% else %}
-                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
-                                    {% endif %}
-                                {% endfor %}
+                            <div class="modal-reliability">
+                                We are {{ '%0.2f'| format(d.result.reliability*100|float)}}% sure this user is a bot.
                             </div>
                             {% endif %}
                         </div><br>

@@ -5,6 +5,7 @@ from app.irsystem.models.helpers import NumpyEncoder as NumpyEncoder
 
 project_name = "beepboop: Bot Finder"
 net_id = "Fawn Wong (fyw6), Cindy Wang (cw653), Danna Greenberg (dg489), Stephanie Hogan (sjh278), Annie Zhang (zz229)"
+icons = ["/static/icon0.png", "/static/icon1.png", "/static/icon2.png", "/static/icon3"]
 
 @irsystem.route('/', methods=['GET'])
 def search():
