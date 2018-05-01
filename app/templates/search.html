@@ -106,6 +106,7 @@
                             <h5 class="modal-title" id="exampleModalLongTitle">{{ d.result.name }}</h5><br>
                             <p>Score: <span class="rank">{{ '%0.2f'| format(d.result.score|float) }}</span></p><br>
                             <p><span class="rank">{{ d.result.karma }}</span> Reddit karma</p><br>
+                            <p>Sentiment: <span class="rank">{{ '%0.2f'| format(d.result.sent|float) }}</span></p><br>
                             {% if d.result.stuff|length != 0 %}
                             <div class="modal-topics">
                                 Relevant topics:
