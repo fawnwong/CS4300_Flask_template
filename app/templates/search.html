@@ -124,11 +124,9 @@
                             <div class="modal-comment">
                                 {{ d.result.comment }}
                             </div><br>
-                            {% if d.result.stuff %}
                             <div class="modal-reliability">
                                 We are {{ '%0.2f'| format(d.result.reliability*100|float)}}% sure this user is a bot.
                             </div>
-                            {% endif %}
                         </div><br>
                         <div class="modal-footer">
                             <p><a href="{{ d.result.link }}">Find me on Reddit >></a></p>
