@@ -17,7 +17,8 @@
             </h1>
             <br />
             <div id="desc">
-                You can search in three ways! Searching by categories will find bots most relevant to the category you input. Searching by comments will find the most similar bots based on their own comments.
+                This application is for finding Reddit bots — whether you want to find a bot with a specific functionality or just explore Reddit, we're here for you!
+                 You can search in three ways. Searching by categories will find bots most relevant to the category you input. Searching by comments will find the most similar bots based on their own comments.
                 Searching by name will find bots with names most similar to your query.
             </div>
             <br />
@@ -48,11 +49,14 @@
                                 <option value="none">None</option>
                                 <option value="funny">Funny</option>
                                 <option value="stupid">Stupid</option>
+                                <option value="good">Good</option>
                                 <option value="bad">Bad</option>
                                 <option value="useful">Useful</option>
+                                <option value="interesting">Interesting</option>
                                 <option value="appreciated">Appreciated</option>
                                 <option value="factual">Factual</option>
                                 <option value="shocking">Shocking</option>
+                                <option value="silly">Silly</option>
                             </select>
                         </div>
                         <label class="sort-bar" id="sort-label">
@@ -165,7 +169,7 @@
             {% set counter = counter + 1 %}
             {% endfor %}
         {% else %} 
-            <h2 id='output'>no results found.</h2> <br />
+            <h2 id='output'>Couldn't find anything!</h2> <br />
         {% endif %}
         </form>
     </body>
