@@ -460,6 +460,9 @@ button:focus {
 }
 
 #desc {
-    width: 400px;
+    width: 60%;
+    font-size: 12px;
+    font-weight: 200;
     margin-top: 10px;
+    color: #aaaaaa;
 }
