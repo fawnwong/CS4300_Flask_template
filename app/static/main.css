@@ -350,10 +350,13 @@ button:focus {
 .modal-header {
     border-bottom: unset;
     text-align: center;
+    padding: 15px 15px 10px 15px;
+
 }
 
 .modal-body {
     width: 100%;
+    padding: 0px 15px 15px 15px;
 }
 
 .modal-footer {
@@ -376,6 +379,15 @@ button:focus {
 .modal-topics {
     width: 100%;
     font-size: 12px;
+    font-weight: 200;
+    color: #666666;
+    text-align: center;
+    margin: 5px 0px;
+}
+
+.modal-reliability {
+    width: 100%;
+    font-size: 10px;
     font-weight: 200;
     color: #aaaaaa;
     text-align: center;

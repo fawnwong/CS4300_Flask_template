@@ -20,7 +20,7 @@
             
             <div class="search">
                 <div id="botgraphic">
-                    <img src="/static/bot.png" alt="happybot" height="342" width="254">
+                    <img src="/static/bot.png" alt="happybot" height="342" width="254"/>
                 </div>
                 <div id="search-bar">
                     <input id="input" type="text" name="search" class="form-input" value="" placeholder="Do you know what you want your bot to do?">
@@ -29,9 +29,9 @@
                     <div class="left-align">
                         <div class="select-style sort-bar">
                             <select id="search-select" name="search-type">
-                                <option value="name">Name</option>
-                                <option value="bot-com">Bot Comments</option>
                                 <option value="user-com">User Comments</option>
+                                <option value="bot-com">Bot Comments</option>
+                                <option value="name">Name</option>
                             </select>
                         </div>
                         <label class="sort-bar" id="sort-label">Search By</label>
@@ -59,15 +59,15 @@
         <form id="results" class="form-inline global-search fade-in">
         {% if data %}
             <h2 id="output">{{output_message}}</h2> <br>
-            {% set icon_count = 0 %}
             {% set icons = ["/static/icon0.png", "/static/icon1.png", "/static/icon2.png", "/static/icon3.png"] %}
+            {% set counter = 0 %}
             {% for d in data %}   
+            {% if counter < 30 %}
             <!-- add scores, highlight comments --> 
                 <div class="result" onclick="showModal({{ d.result.name.replace('-','_') }})">
                     <div class="result-left">
                         <!-- cycle through icons -->
-                        {% set icon_count = icon_count + 1 %}
-                        <div id="icon"><img src="{{ icons[icon_count % 4] }}" alt="beepboop" width="65no resut"></div><br />
+                        <div id="icon"><img src="{{ icons[counter % 4] }}" alt="beepboop" width="65no resut"></div><br />
                         <p>Score: <span class="rank">{{'%0.2f'| format(d.result.score|float)}}</span>
                     </div>
                     <div class="result-right">
@@ -98,6 +98,16 @@
                             <h5 class="modal-title" id="exampleModalLongTitle">{{ d.result.name }}</h5><br>
                             <p>Score: <span class="rank">{{ d.result.score }}</span></p><br>
                             <p><span class="rank">{{ d.result.karma }}</span> Reddit karma</p><br>
+                            <div class="modal-topics">
+                                    Relevant topics:
+                                    {% for s in range(0,d.result.stuff|length) %}
+                                        {% if s == d.result.stuff|length - 1 %}
+                                            {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}
+                                        {% else %}
+                                            {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                         </div><br>
                         <div class="modal-body">
                             <h6>Example Comment</h6><br>
@@ -105,15 +115,8 @@
                                 {{ d.result.comment }}
                             </div><br>
                             {% if d.result.stuff %}
-                            <div class="modal-topics">
-                                Relevant topics:
-                                {% for s in range(0,d.result.stuff|length) %}
-                                    {% if s == d.result.stuff|length - 1 %}
-                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}}
-                                    {% else %}
-                                        {{d.result.stuff[s][0]}} &middot {{'%0.2f'| format(d.result.stuff[s][1]|float)}},
-                                    {% endif %}
-                                {% endfor %}
+                            <div class="modal-reliability">
+                                We are {{ '%0.2f'| format(d.result.reliability*100|float)}}% sure this user is a bot.
                             </div>
                             {% endif %}
                         </div><br>
@@ -122,9 +125,11 @@
                         </div>
                     </div>
                 </div>
+            {% endif %}
+            {% set counter = counter + 1 %}
             {% endfor %}
         {% else %} 
-            <h2 id="output">No results found.</h2> <br>
+            <h2 id='output'>no results found.</h2> <br />
         {% endif %}
         </form>
     </body>
