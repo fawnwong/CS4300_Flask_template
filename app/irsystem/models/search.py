@@ -15,7 +15,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))   # refers to application_
 bot_data  = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_data.p'), "rb" ) )
 
 # result_dict = cPickle.load( open(os.path.join(APP_ROOT, '../data/user_results.p'), "rb" ) )
-with open(os.path.join(APP_ROOT, '../data/new_comment_results.json')) as myfile:
+with open(os.path.join(APP_ROOT, '../data/topics_to_bots.json')) as myfile:
 	user_sentiment = json.loads(myfile.read())
 
 bot_names = bot_data.keys()
@@ -33,7 +33,7 @@ doc_by_vocab = tfidf_vec.transform([bot_data[d] for d in bot_data.keys()]).toarr
 
 bot_info = cPickle.load( open(os.path.join(APP_ROOT, '../data/bot_info.p'), "rb" ) )
 
-with open(os.path.join(APP_ROOT, '../data/bot_data_complete_but_disorganized.json')) as myfile:
+with open(os.path.join(APP_ROOT, '../data/bot_to_topics_updated.json')) as myfile:
 	bot_sent = json.loads(myfile.read())
 
 def top_n_cos(query_string, tfidf):
@@ -64,7 +64,10 @@ lexicon.create_category("appreciated", ["appreciate", "thanks", "good", "useful"
 #lexicon.create_category("interesting", ["cool", "interesting", "fascinating"])
 lexicon.create_category("factual", ["fact", "check", "statistics", "information", "informative"])
 lexicon.create_category("shocking", ["shocked", "wtf", "shit", "jesus", "christ", "yikes"])
-
+lexicon.create_category("english", ["english", "language", "grammar", "writing", "punctuation", "spelling", "spell", "misspell", "edit", "write"])
+lexicon.create_category("nature", ["nature", "tree", "flower", "grass", "animal", "plant"])
+lexicon.create_category("government", ["government", "politics", "political", "politician", "partisan", "democrat", "republican", "president", "congress"])
+lexicon.create_category("news", ["news", "newspaper", "article", "event", "current"])
 # def queryAnalysis(input_query):
 # 	# initialize with our own categories
 # 	# get empath categories from query
@@ -247,10 +250,12 @@ def bot_to_list(query, query_type, category):
 			except:
 				res_dict["sent"] = 0
 			entry_dict["result"] = res_dict
-			if category == "no category":
-				data.append(entry_dict)
-			elif edit_dist[i][1] in category_names:
-				data.append(entry_dict)
+			print(score)
+			if score > .05:
+				if category == "no category":
+					data.append(entry_dict)
+				elif edit_dist[i][1] in category_names:
+					data.append(entry_dict)
 	elif query_type == "bot-com":
 		cos_sim = top_n_cos(query, tfidf_vec)
 		data = []
@@ -275,10 +280,12 @@ def bot_to_list(query, query_type, category):
 			except:
 				res_dict["sent"] = 0
 			entry_dict["result"] = res_dict
-			if category == "no category":
-				data.append(entry_dict)
-			elif cos_sim[i][0] in category_names:
-				data.append(entry_dict)
+			print(score)
+			if score > .05:
+				if category == "no category":
+					data.append(entry_dict)
+				elif cos_sim[i][0] in category_names:
+					data.append(entry_dict)
 
 	else:
 		'''
@@ -342,10 +349,12 @@ def bot_to_list(query, query_type, category):
 			except:
 				res_dict["sent"] = 0
 			entry_dict["result"] = res_dict
-			if category == "no category":
-				data.append(entry_dict)	
-			elif myresults[i][0] in category_names:
-				data.append(entry_dict)	
+			print(score)
+			if score > .05:
+				if category == "no category":
+					data.append(entry_dict)	
+				elif myresults[i][0] in category_names:
+					data.append(entry_dict)	
 	return data
 
 
